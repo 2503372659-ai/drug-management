@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>药品管理提醒</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-light: #eff6ff;
+            --danger: #ef4444;
+            --danger-light: #fef2f2;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --warning-light: #fffbeb;
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --bg: #f1f5f9;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.04);
+            --radius: 12px;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            min-height: 100vh;
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+
+        /* 顶部导航 */
+        .navbar {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.9);
+            box-shadow: var(--shadow-sm);
+        }
+        .navbar-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), #818cf8);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .status-badge {
+            background: var(--success);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .status-badge.urgent {
+            background: var(--danger);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); }
+            100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 提醒横幅 */
+        .alert-banner {
+            background: var(--danger-light);
+            border-left: 4px solid var(--danger);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        .alert-banner.hidden { display: none; }
+        .alert-icon {
+            font-size: 1.5rem;
+        }
+        .alert-badge {
+            background: var(--danger);
+            color: white;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 卡片 */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .card-header h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-header .toggle-icon {
+            transition: transform 0.2s;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        .card.collapsed .card-body { display: none; }
+        .card.collapsed .toggle-icon { transform: rotate(-90deg); }
+
+        /* 表单 */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+        }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input, select, button {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: var(--transition);
+            background: var(--card);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+        .period-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .period-row input { width: 70px; }
+
+        /* 按钮 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover { background: #2563eb; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        .btn-outline:hover { background: #f8fafc; }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 6px;
+            border: none;
+        }
+        .btn-ghost:hover { background: #f1f5f9; }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-xs { padding: 4px 8px; font-size: 0.75rem; }
+        .btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            grid-column: 1 / -1;
+            flex-wrap: wrap;
+        }
+
+        /* 表格 */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover { background: #f8fafc; }
+        tr.urgent {
+            background: var(--danger-light) !important;
+            border-left: 3px solid var(--danger);
+        }
+        .patient-name {
+            font-weight: 600;
+            color: var(--text);
+        }
+        .next-date {
+            font-weight: 700;
+            color: var(--text);
+        }
+        .next-date.urgent-date {
+            color: var(--danger);
+            background: var(--danger-light);
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .status-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .status-tag.urgent-tag {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+        .status-tag.normal-tag {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+        .action-btns {
+            display: flex;
+            gap: 4px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 10px; }
+
+        /* 加载遮罩 */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            font-weight: 500;
+        }
+        .loading-overlay.hidden { display: none; }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid var(--border);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 640px) {
+            .navbar-inner { height: 52px; }
+            .logo { font-size: 1rem; }
+            .card { padding: 16px; }
+            .form-grid { grid-template-columns: 1fr; }
+            th, td { padding: 10px 12px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- 顶部导航 -->
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="logo" href="#">
+            <span class="logo-icon">💊</span>
+            药品管理提醒
+        </a>
+        <div id="statusBadge" class="status-badge">
+            ✅ 全部正常
+        </div>
+    </div>
+</nav>
+
+<!-- 加载遮罩 -->
+<div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <span>正在识别文字，请稍候...</span>
+</div>
+
+<div class="container">
+    <!-- 提醒横幅 -->
+    <div id="alertBanner" class="alert-banner hidden">
+        <span class="alert-icon">🔔</span>
+        <span id="alertText"></span>
+        <span class="alert-badge" id="alertNumber">0</span>
+    </div>
+
+    <!-- 添加表单卡片 -->
+    <div class="card" id="formCard">
+        <div class="card-header" id="formCardHeader">
+            <h2>
+                <span id="formIcon">➕</span>
+                <span id="formTitle">添加患者</span>
+            </h2>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="card-body" id="formCardBody">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>姓名 *</label>
+                    <input type="text" id="nameInput" placeholder="例如: 张三">
+                </div>
+                <div class="form-group">
+                    <label>医保类型</label>
+                    <select id="insuranceInput">
+                        <option value="城镇职工">城镇职工</option>
+                        <option value="城乡居民">城乡居民</option>
+                        <option value="新农合">新农合</option>
+                        <option value="自费">自费</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>医院</label>
+                    <input type="text" id="hospitalInput" placeholder="例如: 市第一人民医院">
+                </div>
+                <div class="form-group">
+                    <label>首方日期 *</label>
+                    <input type="date" id="firstDateInput">
+                </div>
+                <div class="form-group">
+                    <label>用药周期 *</label>
+                    <div class="period-row">
+                        <input type="number" id="periodValue" value="1" min="1" step="1">
+                        <select id="periodUnit">
+                            <option value="month">个月</option>
+                            <option value="day">天</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button id="addBtn" class="btn btn-primary">➕ 添加患者</button>
+                    <button id="updateBtn" class="btn btn-primary" style="display:none;">💾 更新信息</button>
+                    <button id="cancelEditBtn" class="btn btn-outline" style="display:none;">取消编辑</button>
+                    <button id="uploadBtn" class="btn btn-outline">📷 上传处方</button>
+                    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                </div>
+            </div>
+            <input type="hidden" id="editingId" value="">
+            <div id="ocrFeedback" style="margin-top:12px; font-size:0.85rem; color: var(--text-secondary);"></div>
+        </div>
+    </div>
+
+    <!-- 患者列表 -->
+    <div class="card">
+        <div class="card-header">
+            <h2>📋 患者列表</h2>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>医保</th>
+                    <th>医院</th>
+                    <th>首方日期</th>
+                    <th>周期</th>
+                    <th>下次拿药</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="tableBody">
+                <tr><td colspan="8"><div class="empty-state"><div class="icon">📭</div>暂无患者数据，点击上方添加</div></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ========== 存储 ==========
+        const STORAGE_KEY = 'medicine_patients_v2';
+        function loadPatients() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+        function savePatients(patients) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(patients));
+        }
+
+        // ========== 日期计算 ==========
+        function calculateNextDate(firstDateStr, periodValue, periodUnit) {
+            const date = new Date(firstDateStr + 'T00:00:00');
+            if (isNaN(date.getTime())) return null;
+            if (periodUnit === 'month') {
+                const d = new Date(date);
+                d.setMonth(d.getMonth() + periodValue);
+                return d;
+            } else {
+                const d = new Date(date);
+                d.setDate(d.getDate() + periodValue);
+                return d;
+            }
+        }
+        function formatDate(date) {
+            if (!date) return '';
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}-${m}-${d}`;
+        }
+        function getTodayDateStr() { return formatDate(new Date()); }
+        function isUrgent(nextDateObj) {
+            if (!nextDateObj) return false;
+            const today = new Date(); today.setHours(0,0,0,0);
+            const nd = new Date(nextDateObj); nd.setHours(0,0,0,0);
+            return nd <= today;
+        }
+
+        // ========== 通知 ==========
+        function requestNotificationPermission() {
+            if (!("Notification" in window)) return;
+            if (Notification.permission === "default") {
+                Notification.requestPermission();
+            }
+        }
+        function showUrgentNotification(count, names) {
+            if (!("Notification" in window) || Notification.permission !== "granted") return;
+            const body = count === 1 ? `${names[0]} 需要拿药` : `共${count}人：${names.slice(0,3).join('、')}等`;
+            new Notification('💊 药品拿药提醒', {
+                body: body,
+                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💊</text></svg>',
+                tag: 'med-reminder'
+            });
+        }
+
+        // ========== 渲染 ==========
+        function renderTable() {
+            const patients = loadPatients();
+            const tbody = document.getElementById('tableBody');
+
+            if (patients.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">📭</div>暂无患者数据，点击上方添加</div></td></tr>';
+                updateAlert(0);
+                return;
+            }
+
+            const enriched = patients.map(p => {
+                const next = calculateNextDate(p.firstDate, p.periodValue, p.periodUnit);
+                return { ...p, nextDateStr: next ? formatDate(next) : null, nextDateObj: next };
+            });
+            enriched.sort((a,b) => (a.nextDateObj||Infinity) - (b.nextDateObj||Infinity));
+
+            let urgentCount = 0;
+            const urgentNames = [];
+            let rows = '';
+
+            enriched.forEach(item => {
+                const urgent = isUrgent(item.nextDateObj);
+                if (urgent) { urgentCount++; urgentNames.push(item.name); }
+
+                rows += `
+                    <tr class="${urgent ? 'urgent' : ''}">
+                        <td><span class="patient-name">${escapeHtml(item.name) || '-'}</span></td>
+                        <td>${escapeHtml(item.insurance) || '-'}</td>
+                        <td>${escapeHtml(item.hospital) || '-'}</td>
+                        <td>${item.firstDate}</td>
+                        <td>${item.periodValue}${item.periodUnit==='month'?'个月':'天'}</td>
+                        <td><span class="next-date ${urgent?'urgent-date':''}">${item.nextDateStr || '计算错误'}</span></td>
+                        <td><span class="status-tag ${urgent?'urgent-tag':'normal-tag'}">${urgent ? '⚠️ 需拿药' : '✅ 正常'}</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn btn-xs btn-outline" onclick="window.takeMedicine('${item.id}')">💊 已拿药</button>
+                                <button class="btn btn-xs btn-ghost" onclick="window.editPatient('${item.id}')">✏️</button>
+                                <button class="btn btn-xs btn-ghost" style="color:var(--danger)" onclick="window.deletePatient('${item.id}')">🗑️</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = rows;
+            updateAlert(urgentCount);
+            if (urgentCount > 0) showUrgentNotification(urgentCount, urgentNames);
+        }
+
+        function updateAlert(count) {
+            const banner = document.getElementById('alertBanner');
+            const badge = document.getElementById('statusBadge');
+            const alertNum = document.getElementById('alertNumber');
+            const alertText = document.getElementById('alertText');
+
+            if (count > 0) {
+                banner.classList.remove('hidden');
+                alertNum.textContent = count;
+                alertText.textContent = `有患者需要拿药（截止 ${getTodayDateStr()}）`;
+                badge.textContent = `🔔 ${count}人待提醒`;
+                badge.classList.add('urgent');
+            } else {
+                banner.classList.add('hidden');
+                badge.textContent = '✅ 全部正常';
+                badge.classList.remove('urgent');
+            }
+        }
+
+        function escapeHtml(text) {
+            return String(text||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m]);
+        }
+
+        // ========== 表单操作 ==========
+        function addPatient() {
+            const name = document.getElementById('nameInput').value.trim();
+            const firstDate = document.getElementById('firstDateInput').value;
+            const periodValue = parseInt(document.getElementById('periodValue').value);
+            if (!name || !firstDate || isNaN(periodValue) || periodValue<1) return alert('请填写完整信息');
+            const patients = loadPatients();
+            patients.push({
+                id: Date.now().toString(),
+                name,
+                insurance: document.getElementById('insuranceInput').value,
+                hospital: document.getElementById('hospitalInput').value.trim(),
+                firstDate,
+                periodValue,
+                periodUnit: document.getElementById('periodUnit').value
+            });
+            savePatients(patients);
+            clearForm();
+            renderTable();
+        }
+
+        function editPatient(id) {
+            const patients = loadPatients();
+            const p = patients.find(x=>x.id===id);
+            if(!p) return;
+            document.getElementById('nameInput').value = p.name;
+            document.getElementById('insuranceInput').value = p.insurance;
+            document.getElementById('hospitalInput').value = p.hospital;
+            document.getElementById('firstDateInput').value = p.firstDate;
+            document.getElementById('periodValue').value = p.periodValue;
+            document.getElementById('periodUnit').value = p.periodUnit;
+            document.getElementById('editingId').value = id;
+            setEditMode(true);
+            window.scrollTo({top:0,behavior:'smooth'});
+        }
+
+        function updatePatient() {
+            const id = document.getElementById('editingId').value;
+            if(!id) return;
+            const patients = loadPatients();
+            const idx = patients.findIndex(x=>x.id===id);
+            if(idx===-1) return;
+            patients[idx] = {
+                ...patients[idx],
+                name: document.getElementById('nameInput').value.trim(),
+                insurance: document.getElementById('insuranceInput').value,
+                hospital: document.getElementById('hospitalInput').value.trim(),
+                firstDate: document.getElementById('firstDateInput').value,
+                periodValue: parseInt(document.getElementById('periodValue').value),
+                periodUnit: document.getElementById('periodUnit').value
+            };
+            savePatients(patients);
+            clearForm();
+            renderTable();
+        }
+
+        function clearForm() {
+            document.getElementById('nameInput').value = '';
+            document.getElementById('hospitalInput').value = '';
+            document.getElementById('firstDateInput').value = '';
+            document.getElementById('periodValue').value = 1;
+            document.getElementById('periodUnit').value = 'month';
+            document.getElementById('editingId').value = '';
+            document.getElementById('ocrFeedback').textContent = '';
+            setEditMode(false);
+        }
+
+        function setEditMode(editing) {
+            document.getElementById('addBtn').style.display = editing ? 'none' : 'inline-flex';
+            document.getElementById('updateBtn').style.display = editing ? 'inline-flex' : 'none';
+            document.getElementById('cancelEditBtn').style.display = editing ? 'inline-flex' : 'none';
+            document.getElementById('formIcon').textContent = editing ? '✏️' : '➕';
+            document.getElementById('formTitle').textContent = editing ? '编辑患者信息' : '添加患者';
+            // 确保卡片展开
+            document.getElementById('formCard').classList.remove('collapsed');
+        }
+
+        function takeMedicine(id) {
+            if(!confirm('确认该患者今天已拿药？首方日期将更新为今天。')) return;
+            const patients = loadPatients();
+            const p = patients.find(x=>x.id===id);
+            if(!p) return;
+            p.firstDate = formatDate(new Date());
+            savePatients(patients);
+            renderTable();
+        }
+
+        function deletePatient(id) {
+            if(!confirm('确定删除该患者记录？')) return;
+            let patients = loadPatients();
+            patients = patients.filter(x=>x.id!==id);
+            savePatients(patients);
+            renderTable();
+        }
+
+        // ========== OCR ==========
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+        }
+        async function performOCR(file) {
+            showLoading(true);
+            const feedback = document.getElementById('ocrFeedback');
+            feedback.textContent = '';
+            try {
+                const url = URL.createObjectURL(file);
+                const worker = await Tesseract.createWorker('chi_sim', 1, { logger: m => {
+                    if (m.status === 'recognizing text') feedback.textContent = `识别中... ${Math.round(m.progress*100)}%`;
+                }});
+                const { data: { text } } = await worker.recognize(url);
+                await worker.terminate();
+                URL.revokeObjectURL(url);
+                return text;
+            } catch (e) {
+                console.error(e);
+                alert('识别失败，请检查图片清晰度');
+                return '';
+            } finally {
+                showLoading(false);
+            }
+        }
+        function extractInfo(text) {
+            const res = { name: '', hospital: '', date: '' };
+            const dateMatch = text.match(/(\d{4})[年\-.\/](\d{1,2})[月\-.\/](\d{1,2})日?/);
+            if (dateMatch) res.date = `${dateMatch[1]}-${String(dateMatch[2]).padStart(2,'0')}-${String(dateMatch[3]).padStart(2,'0')}`;
+            const hosMatch = text.match(/([\u4e00-\u9fa5]+(?:人民医院|医院|卫生院|诊所|保健院))/);
+            if (hosMatch) res.hospital = hosMatch[1];
+            const nameMatch = text.match(/(?:姓名|患者|病人)[:：]?\s*([\u4e00-\u9fa5]{2,4})/);
+            if (nameMatch) res.name = nameMatch[1];
+            return res;
+        }
+        function handleFileUpload(file) {
+            if (!file) return;
+            performOCR(file).then(raw => {
+                if (!raw.trim()) return alert('未识别到文字');
+                const info = extractInfo(raw);
+                if (info.name) document.getElementById('nameInput').value = info.name;
+                if (info.hospital) document.getElementById('hospitalInput').value = info.hospital;
+                if (info.date) document.getElementById('firstDateInput').value = info.date;
+                document.getElementById('ocrFeedback').innerHTML = `✅ 已自动填入，请核对后添加<br><small>预览：${escapeHtml(raw.substring(0,80))}...</small>`;
+            });
+        }
+
+        // 暴露全局
+        window.takeMedicine = takeMedicine;
+        window.editPatient = editPatient;
+        window.deletePatient = deletePatient;
+
+        // 事件绑定
+        document.getElementById('addBtn').addEventListener('click', addPatient);
+        document.getElementById('updateBtn').addEventListener('click', updatePatient);
+        document.getElementById('cancelEditBtn').addEventListener('click', clearForm);
+        document.getElementById('uploadBtn').addEventListener('click', ()=>document.getElementById('fileInput').click());
+        document.getElementById('fileInput').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (file) handleFileUpload(file);
+            e.target.value = '';
+        });
+        // 卡片折叠
+        document.getElementById('formCardHeader').addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.closest('button')) return;
+            document.getElementById('formCard').classList.toggle('collapsed');
+        });
+
+        // 启动
+        requestNotificationPermission();
+        renderTable();
+        setInterval(() => {
+            const patients = loadPatients();
+            const urgent = patients.filter(p => {
+                const next = calculateNextDate(p.firstDate, p.periodValue, p.periodUnit);
+                return isUrgent(next);
+            });
+            if (urgent.length > 0) showUrgentNotification(urgent.length, urgent.map(p=>p.name));
+        }, 60*60*1000);
+    })();
+</script>
+</body>
+</html>
