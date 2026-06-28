@@ -1,0 +1,4 @@
+﻿node_modules/
+.env
+chi_sim.traineddata
+medicine-manager/node_modules/
