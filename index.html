@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -241,7 +241,12 @@ th,td{padding:8px 10px;font-size:.78rem}
                 <button class="btn" onclick="document.getElementById('importInput').click()">📥 导入备份</button>
                 <input type="file" id="importInput" accept=".json" style="display:none" onchange="imD(event)">
             </div>
-            <div class="settings-section">
+            <div class="settings-section" style="margin-bottom:16px">
+                <h3 style="font-size:.95rem;font-weight:600;margin-bottom:10px">👤 账号</h3>
+                <p style="font-size:.85rem;color:var(--text-secondary);margin-bottom:10px" id="userInfo"></p>
+                <button class="btn" onclick="doLogout()" style="color:var(--danger);border-color:var(--danger)">🚪 退出登录（换账号）</button>
+            </div>
+            <div class="settings-section" style="margin-bottom:16px">
                 <h3 style="font-size:.95rem;font-weight:600;margin-bottom:10px">ℹ️ 关于</h3>
                 <p style="font-size:.85rem;color:var(--text-secondary);line-height:1.8">
                     慢性病用药管理系统 v3.0<br>
