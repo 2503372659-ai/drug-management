@@ -96,6 +96,7 @@ tr.urgent{background:var(--danger-light)!important}
 .loading-overlay.show{display:flex}
 .spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:12px}
 @keyframes spin{to{transform:rotate(360deg)}}
+.login-page{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;padding:20px}.login-box{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3)}.login-logo{text-align:center;margin-bottom:24px}.login-logo .icon{width:56px;height:56px;background:linear-gradient(135deg,var(--primary),#818cf8);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#fff;margin:0 auto 12px}.login-logo h1{font-size:1.2rem;font-weight:700}.login-logo p{font-size:.8rem;color:var(--text-secondary);margin-top:4px}.login-form .fg{margin-bottom:14px}.login-form .fg label{font-size:.8rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:5px}.login-form .fg input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;font-family:inherit}.login-form .fg input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.12)}.login-form .btn{width:100%;justify-content:center;padding:11px;font-size:.95rem;margin-top:4px}.login-error{font-size:.82rem;color:var(--danger);text-align:center;margin-top:8px;display:none}.login-switch{text-align:center;margin-top:14px;font-size:.85rem;color:var(--text-secondary)}.login-switch a{color:var(--primary);cursor:pointer;font-weight:600;text-decoration:none}.login-switch a:hover{text-decoration:underline}.login-hint{font-size:.75rem;color:var(--text-secondary);text-align:center;margin-top:10px}
 .fab{position:fixed;bottom:20px;right:20px;width:50px;height:50px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;border:none;cursor:pointer;z-index:50;box-shadow:0 4px 12px rgba(79,70,229,.4);transition:.15s}
 .fab:active{transform:scale(.9)}
 .fab.hide{display:none}
@@ -121,6 +122,34 @@ th,td{padding:8px 10px;font-size:.78rem}
 </style>
 </head>
 <body>
+
+<div class="login-page" id="loginPage">
+    <div class="login-box">
+        <div class="login-logo">
+            <div class="icon">💊</div>
+            <h1>慢性病用药管理</h1>
+            <p>登录后使用完整功能</p>
+        </div>
+        <!-- 登录表单 -->
+        <div class="login-form" id="loginForm">
+            <div class="fg"><label>用户名</label><input type="text" id="loginUser" placeholder="输入用户名" autocomplete="username"></div>
+            <div class="fg"><label>密码</label><input type="password" id="loginPass" placeholder="输入密码" autocomplete="current-password"></div>
+            <button class="btn btn-primary" onclick="doLogin()">登 录</button>
+            <div class="login-error" id="loginErr"></div>
+            <div class="login-switch">还没有账号？<a onclick="showRegister()">注册新账号</a></div>
+        </div>
+        <!-- 注册表单 -->
+        <div class="login-form" id="registerForm" style="display:none">
+            <div class="fg"><label>用户名</label><input type="text" id="regUser" placeholder="输入用户名" autocomplete="off"></div>
+            <div class="fg"><label>密码</label><input type="password" id="regPass" placeholder="输入密码" autocomplete="new-password"></div>
+            <div class="fg"><label>确认密码</label><input type="password" id="regPass2" placeholder="再次输入密码" autocomplete="new-password"></div>
+            <button class="btn btn-primary" onclick="doRegister()">注 册</button>
+            <div class="login-error" id="regErr"></div>
+            <div class="login-switch">已有账号？<a onclick="showLogin()">去登录</a></div>
+        </div>
+        <div class="login-hint">数据保存在本地浏览器，不同设备数据独立</div>
+    </div>
+</div>
 
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
@@ -296,6 +325,124 @@ th,td{padding:8px 10px;font-size:.78rem}
 
 <script>
 const STORAGE_KEY = "med_sys_v3";
+
+// ========== 账号系统 ==========
+var curUser = null;
+var SESS_KEY = "med_session_v1";
+var ACCT_KEY = "med_accounts_v1";
+
+function hashPW(pw) {
+    var h = 0;
+    for (var i = 0; i < pw.length; i++) { var c = pw.charCodeAt(i); h = ((h << 5) - h) + c; h = h & h; }
+    return "h" + Math.abs(h).toString(36);
+}
+
+function getAccounts() {
+    try { return JSON.parse(localStorage.getItem(ACCT_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveAccounts(a) { localStorage.setItem(ACCT_KEY, JSON.stringify(a)); }
+
+function checkSession() {
+    try {
+        var s = JSON.parse(localStorage.getItem(SESS_KEY));
+        if (s && s.user) { curUser = s.user; document.getElementById("loginPage").style.display = "none"; return true; }
+    } catch(e) {}
+    curUser = null;
+    document.getElementById("loginPage").style.display = "flex";
+    return false;
+}
+
+function doLogin() {
+    var u = document.getElementById("loginUser").value.trim();
+    var p = document.getElementById("loginPass").value;
+    var err = document.getElementById("loginErr");
+    if (!u || !p) { err.textContent = "请输入用户名和密码"; err.style.display = "block"; return; }
+    var accts = getAccounts();
+    if (!accts[u]) { err.textContent = "用户名不存在"; err.style.display = "block"; return; }
+    if (accts[u].pw !== hashPW(p)) { err.textContent = "密码错误"; err.style.display = "block"; return; }
+    curUser = u;
+    localStorage.setItem(SESS_KEY, JSON.stringify({ user: u }));
+    document.getElementById("loginPage").style.display = "none";
+    err.style.display = "none";
+    document.getElementById("loginUser").value = "";
+    document.getElementById("loginPass").value = "";
+    refreshAfterLogin();
+}
+
+function doRegister() {
+    var u = document.getElementById("regUser").value.trim();
+    var p = document.getElementById("regPass").value;
+    var p2 = document.getElementById("regPass2").value;
+    var err = document.getElementById("regErr");
+    if (!u) { err.textContent = "请输入用户名"; err.style.display = "block"; return; }
+    if (u.length < 2) { err.textContent = "用户名至少2个字符"; err.style.display = "block"; return; }
+    if (p.length < 3) { err.textContent = "密码至少3个字符"; err.style.display = "block"; return; }
+    if (p !== p2) { err.textContent = "两次密码不一致"; err.style.display = "block"; return; }
+    var accts = getAccounts();
+    if (accts[u]) { err.textContent = "用户名已存在"; err.style.display = "block"; return; }
+    accts[u] = { pw: hashPW(p), created: td() };
+    saveAccounts(accts);
+    curUser = u;
+    localStorage.setItem(SESS_KEY, JSON.stringify({ user: u }));
+    document.getElementById("loginPage").style.display = "none";
+    err.style.display = "none";
+    document.getElementById("regUser").value = "";
+    document.getElementById("regPass").value = "";
+    document.getElementById("regPass2").value = "";
+    // Initialize empty data for new user
+    localStorage.setItem("med_data_" + u, JSON.stringify({ p: [], m: [], r: [] }));
+    refreshAfterLogin();
+}
+
+function doLogout() {
+    if (!confirm("确定退出登录？")) return;
+    localStorage.removeItem(SESS_KEY);
+    curUser = null;
+    document.getElementById("loginPage").style.display = "flex";
+    showLogin();
+}
+
+function showRegister() {
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("registerForm").style.display = "block";
+    document.getElementById("regErr").style.display = "none";
+}
+
+function showLogin() {
+    document.getElementById("loginForm").style.display = "block";
+    document.getElementById("registerForm").style.display = "none";
+    document.getElementById("loginErr").style.display = "none";
+}
+
+// Support Enter key
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        if (document.getElementById("loginForm").style.display !== "none" && document.getElementById("loginPage").style.display === "flex") doLogin();
+        else if (document.getElementById("registerForm").style.display !== "none" && document.getElementById("loginPage").style.display === "flex") doRegister();
+    }
+});
+
+// ========== 数据层修改: 按用户隔离 ==========
+var origLD = ld;
+var origSV = sv;
+var STORAGE_KEY_PREFIX = "med_data_";
+
+function getDataKey() { return STORAGE_KEY_PREFIX + (curUser || "default"); }
+
+function ld() {
+    try { return JSON.parse(localStorage.getItem(getDataKey())) || { p: [], m: [], r: [] }; }
+    catch(e) { return { p: [], m: [], r: [] }; }
+}
+function sv(d) { localStorage.setItem(getDataKey(), JSON.stringify(d)); }
+
+// ========== 登录后刷新 ==========
+function refreshAfterLogin() {
+    rH(); rP();
+    // Update user info in settings
+    var ue = document.getElementById("userInfo");
+    if (ue) ue.textContent = "当前用户: " + curUser;
+}
+
 function ld(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{p:[],m:[],r:[]}}catch(e){return{p:[],m:[],r:[]}}}
 function sv(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}
 function gid(){var d=ld(),mx=0;d.p.forEach(function(x){if(x.id>mx)mx=x.id});d.m.forEach(function(x){if(x.id>mx)mx=x.id});d.r.forEach(function(x){if(x.id>mx)mx=x.id});return mx+1}
@@ -342,7 +489,7 @@ document.getElementById("cancelEditBtn").addEventListener("click",cPF);
 document.getElementById("ocrBtn").addEventListener("click",function(){document.getElementById("ocrFileInput").value="";document.getElementById("ocrResult").style.display="none";document.getElementById("ocrError").style.display="none";document.getElementById("ocrPreviewImg").style.display="none";oD=null;oM("ocrModal")});
 if("Notification" in window&&Notification.permission==="default"){Notification.requestPermission()}
 setInterval(function(){var d=ld(),ug=d.m.filter(function(m){return cm(m).overdue});if(ug.length>0&&"Notification" in window&&Notification.permission==="granted"){new Notification("💊 药品取药提醒",{body:"有 "+ug.length+" 项药品已超期需要取药",tag:"med-reminder"})}},30*60*1000);
-rH();rP();
+if (!checkSession()) { /* waiting for login */ }
 </script>
 </body>
 </html>
