@@ -7,82 +7,71 @@
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <style>
 :root{
-  --ink:#172033;--muted:#6b7280;--soft:#f6f7fb;--paper:#ffffff;--line:#e5e7eb;
-  --brand:#0f766e;--brand-2:#14b8a6;--brand-soft:#dff7f2;
-  --danger:#dc2626;--danger-soft:#fee2e2;--warn:#d97706;--warn-soft:#fff3c4;
-  --ok:#16a34a;--ok-soft:#dcfce7;--violet:#7c3aed;--violet-soft:#ede9fe;
-  --shadow:0 18px 45px rgba(15,23,42,.08);--small-shadow:0 1px 2px rgba(15,23,42,.06);
-  --r:16px;--r-sm:10px;
+  --ink:#142033;--muted:#667085;--quiet:#98a2b3;--bg:#f5f7fb;--paper:#fff;--line:#e4e7ec;
+  --teal:#0f766e;--teal-2:#14b8a6;--teal-soft:#dff8f3;--blue:#2563eb;--blue-soft:#dbeafe;
+  --rose:#dc2626;--rose-soft:#fee2e2;--amber:#d97706;--amber-soft:#fef3c7;
+  --green:#16a34a;--green-soft:#dcfce7;--violet:#7c3aed;--violet-soft:#ede9fe;
+  --slate:#172033;--shadow:0 18px 45px rgba(15,23,42,.08);--shadow-sm:0 1px 2px rgba(15,23,42,.06);
+  --r-xl:24px;--r-lg:18px;--r-md:12px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#eef8f6 0,#f6f7fb 280px,#f6f7fb 100%);color:var(--ink);min-height:100vh}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-.login{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 15% 18%,rgba(20,184,166,.28),transparent 28%),linear-gradient(135deg,#0f172a,#0f766e)}
-.login-box{width:min(420px,100%);background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.4);border-radius:22px;box-shadow:0 28px 80px rgba(0,0,0,.28);padding:28px}
-.brand-mark{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.35rem;box-shadow:0 14px 30px rgba(15,118,110,.25)}
-.login h1{font-size:1.5rem;margin:16px 0 6px}.login p{margin:0 0 20px;color:var(--muted);font-size:.92rem}
-.field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}.field label{font-size:.82rem;color:#4b5563;font-weight:700}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:linear-gradient(180deg,#eaf8f5 0,#f5f7fb 300px,#f5f7fb 100%);color:var(--ink);min-height:100vh}
+button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
+.login{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:22px;background:radial-gradient(circle at 15% 18%,rgba(20,184,166,.28),transparent 28%),linear-gradient(135deg,#0f172a,#0f766e)}
+.login-box{width:min(430px,100%);background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.45);border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.28);padding:30px}
+.mark{width:54px;height:54px;border-radius:16px;background:linear-gradient(135deg,var(--teal),var(--teal-2));color:#fff;display:grid;place-items:center;font-weight:950;font-size:1.35rem;box-shadow:0 16px 34px rgba(15,118,110,.25)}
+.login h1{margin:18px 0 6px;font-size:1.55rem}.login p{margin:0 0 20px;color:var(--muted);font-size:.92rem}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}.field label{font-size:.82rem;color:#475467;font-weight:850}
 input,select,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff;color:var(--ink);outline:none;transition:border .15s,box-shadow .15s}
-input:focus,select:focus,textarea:focus{border-color:var(--brand-2);box-shadow:0 0 0 4px rgba(20,184,166,.14)}
-textarea{min-height:86px;resize:vertical}.error{display:none;color:var(--danger);font-size:.84rem;margin-top:8px}.hint{color:var(--muted);font-size:.78rem;text-align:center;margin-top:14px}
-.switch{text-align:center;color:var(--muted);font-size:.9rem;margin-top:14px}.switch a{color:var(--brand);font-weight:800;text-decoration:none}
-.app{display:none}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.78);backdrop-filter:blur(16px);border-bottom:1px solid rgba(229,231,235,.9)}
-.top-inner{max-width:1180px;margin:auto;height:68px;display:flex;align-items:center;gap:16px;padding:0 18px}
-.logo{display:flex;align-items:center;gap:11px;font-weight:900}.logo-badge{width:38px;height:38px;border-radius:12px;background:var(--ink);color:#fff;display:grid;place-items:center}
-.logo small{display:block;color:var(--muted);font-weight:600;font-size:.74rem;margin-top:1px}
-.tabs{margin-left:auto;display:flex;gap:6px;background:#eef2f7;border:1px solid #e2e8f0;padding:4px;border-radius:999px}
-.tab{border:0;background:transparent;color:#475569;border-radius:999px;padding:8px 14px;font-weight:800;font-size:.9rem}
-.tab.active{background:#fff;color:var(--brand);box-shadow:var(--small-shadow)}
-.user-pill{display:flex;align-items:center;gap:8px;color:#475569;font-size:.86rem;font-weight:700}
-.wrap{max-width:1180px;margin:auto;padding:22px 18px 80px}.page{display:none}.page.active{display:block}
+input:focus,select:focus,textarea:focus{border-color:var(--teal-2);box-shadow:0 0 0 4px rgba(20,184,166,.14)}
+textarea{min-height:88px;resize:vertical}.error{display:none;color:var(--rose);font-size:.84rem;margin-top:8px}.hint{color:var(--muted);font-size:.78rem;text-align:center;margin-top:14px}
+.switch{text-align:center;color:var(--muted);font-size:.9rem;margin-top:14px}.switch a{color:var(--teal);font-weight:900;text-decoration:none}
+.app{display:none}.topbar{position:sticky;top:0;z-index:35;background:rgba(255,255,255,.8);backdrop-filter:blur(18px);border-bottom:1px solid rgba(228,231,236,.9)}
+.top-inner{max-width:1220px;margin:auto;min-height:70px;display:flex;align-items:center;gap:16px;padding:0 18px}
+.logo{display:flex;align-items:center;gap:12px;font-weight:950}.logo-badge{width:40px;height:40px;border-radius:13px;background:var(--slate);color:#fff;display:grid;place-items:center}.logo small{display:block;color:var(--muted);font-size:.74rem;font-weight:650;margin-top:2px}
+.tabs{margin-left:auto;display:flex;gap:6px;background:#eef2f7;border:1px solid #e2e8f0;padding:4px;border-radius:999px}.tab{border:0;background:transparent;color:#475569;border-radius:999px;padding:8px 15px;font-weight:900;font-size:.9rem}.tab.active{background:#fff;color:var(--teal);box-shadow:var(--shadow-sm)}
+.user-pill{display:flex;align-items:center;gap:8px;color:#475569;font-size:.86rem;font-weight:800}.user-pill:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+.wrap{max-width:1220px;margin:auto;padding:22px 18px 88px}.page{display:none}.page.active{display:block}
 .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;margin-bottom:18px}
-.hero-main{position:relative;overflow:hidden;background:linear-gradient(135deg,#103b3a,#0f766e 52%,#14b8a6);color:#fff;border-radius:24px;padding:26px;min-height:220px;box-shadow:var(--shadow)}
-.hero-main:after{content:"";position:absolute;right:-70px;top:-70px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.13)}
-.eyebrow{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.78);font-weight:900}
-.hero h2{font-size:2.1rem;line-height:1.12;margin:10px 0 10px;letter-spacing:0}.hero p{max-width:640px;margin:0;color:rgba(255,255,255,.82)}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
-.hero-side{display:grid;gap:12px}.metric{background:rgba(255,255,255,.88);border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:18px;box-shadow:var(--small-shadow)}
-.metric strong{font-size:2rem;display:block;color:var(--brand)}.metric span{color:var(--muted);font-size:.86rem;font-weight:700}
-.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 14px;font-weight:850;display:inline-flex;align-items:center;gap:8px;justify-content:center;transition:transform .12s,box-shadow .12s,border .12s}
-.btn:hover{box-shadow:0 8px 20px rgba(15,23,42,.08)}.btn:active{transform:scale(.98)}
-.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}.btn.dark{background:#0f172a;border-color:#0f172a;color:#fff}.btn.ghost{background:transparent;border-color:transparent;color:#475569}.btn.danger{color:var(--danger);border-color:#fecaca;background:#fff}
-.btn.sm{padding:7px 10px;border-radius:10px;font-size:.82rem}.btn.icon{width:36px;height:36px;padding:0}
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px}.panel{background:var(--paper);border:1px solid rgba(229,231,235,.9);border-radius:20px;box-shadow:var(--small-shadow)}
-.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 0}.panel-title{font-size:1.02rem;font-weight:900}.panel-sub{color:var(--muted);font-size:.84rem;margin-top:2px}.panel-body{padding:16px 18px 18px}
-.reminder{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:#fff}
-.dot{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:900}.dot.danger{background:var(--danger-soft);color:var(--danger)}.dot.warn{background:var(--warn-soft);color:var(--warn)}.dot.ok{background:var(--ok-soft);color:var(--ok)}
+.hero-main{position:relative;overflow:hidden;background:linear-gradient(135deg,#102b35,#0f766e 56%,#14b8a6);color:#fff;border-radius:var(--r-xl);padding:28px;min-height:232px;box-shadow:var(--shadow)}
+.hero-main:after{content:"";position:absolute;right:-80px;top:-82px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.12)}
+.eyebrow{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.76);font-weight:950}.hero h2{font-size:2.15rem;line-height:1.12;margin:10px 0 10px;letter-spacing:0}.hero p{max-width:650px;margin:0;color:rgba(255,255,255,.82)}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.hero-side{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.8);border-radius:18px;padding:18px;box-shadow:var(--shadow-sm)}.metric strong{display:block;font-size:2rem;color:var(--teal)}.metric span{display:block;color:var(--muted);font-size:.84rem;font-weight:850;margin-top:2px}
+.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 14px;font-weight:900;display:inline-flex;align-items:center;gap:8px;justify-content:center;transition:transform .12s,box-shadow .12s,border .12s}.btn:hover{box-shadow:0 8px 20px rgba(15,23,42,.08)}.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--teal);border-color:var(--teal);color:#fff}.btn.dark{background:#0f172a;border-color:#0f172a;color:#fff}.btn.blue{background:var(--blue);border-color:var(--blue);color:#fff}.btn.ghost{background:transparent;border-color:transparent;color:#475569}.btn.danger{color:var(--rose);border-color:#fecaca;background:#fff}.btn.sm{padding:7px 10px;border-radius:10px;font-size:.82rem}.btn.icon{width:36px;height:36px;padding:0}.btn[disabled]{opacity:.55;cursor:not-allowed;box-shadow:none}
+.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.panel{background:var(--paper);border:1px solid rgba(228,231,236,.95);border-radius:20px;box-shadow:var(--shadow-sm)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 18px 0}.panel-title{font-size:1.02rem;font-weight:950}.panel-sub{color:var(--muted);font-size:.84rem;margin-top:2px}.panel-body{padding:16px 18px 18px}
+.task-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.chip{border:1px solid var(--line);background:#fff;color:#475569;border-radius:999px;padding:7px 11px;font-size:.82rem;font-weight:900}.chip.active{background:#0f172a;color:#fff;border-color:#0f172a}
+.reminder{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:#fff}.reminder:last-child{margin-bottom:0}
+.dot{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:950}.dot.danger{background:var(--rose-soft);color:var(--rose)}.dot.warn{background:var(--amber-soft);color:var(--amber)}.dot.ok{background:var(--green-soft);color:var(--green)}.dot.blue{background:var(--blue-soft);color:var(--blue)}.dot.gray{background:#f1f5f9;color:#64748b}
 .reminder h3{margin:0;font-size:.98rem}.reminder p{margin:4px 0 0;color:var(--muted);font-size:.84rem}.empty{padding:36px 18px;text-align:center;color:var(--muted)}
-.tag{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 9px;font-size:.76rem;font-weight:900}.tag.danger{background:var(--danger-soft);color:var(--danger)}.tag.warn{background:var(--warn-soft);color:#92400e}.tag.ok{background:var(--ok-soft);color:var(--ok)}.tag.info{background:var(--violet-soft);color:var(--violet)}.tag.muted{background:#f1f5f9;color:#475569}
-.toolbar{display:grid;grid-template-columns:1fr 160px auto;gap:10px;margin-bottom:14px}.search{position:relative}.search input{padding-left:38px}.search:before{content:"⌕";position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:900}
-.patient-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.patient-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--small-shadow);display:flex;flex-direction:column;gap:14px}
-.patient-top{display:flex;gap:12px;align-items:flex-start}.avatar{width:44px;height:44px;border-radius:14px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-weight:950;font-size:1rem;flex:0 0 auto}
-.patient-name{font-weight:950;font-size:1.04rem}.patient-meta{color:var(--muted);font-size:.82rem;margin-top:3px}.patient-actions{margin-left:auto;display:flex;gap:4px}
-.med-list{display:grid;gap:8px}.med-row{border-radius:12px;background:#f8fafc;border:1px solid #eef2f7;padding:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
-.med-name{font-weight:900;font-size:.9rem}.med-info{color:var(--muted);font-size:.78rem;margin-top:2px}.card-foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
-.settings-list{display:grid;gap:12px}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.setting-row p{margin:3px 0 0;color:var(--muted);font-size:.84rem}.setting-row strong{font-size:.95rem}
-.modal{position:fixed;inset:0;z-index:40;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}
-.modal-box{width:min(620px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 90px rgba(15,23,42,.26);padding:22px}.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}.modal-title{font-size:1.15rem;font-weight:950}.modal-note{font-size:.84rem;color:var(--muted);margin-top:4px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.span-2{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;flex-wrap:wrap}
-.preview{display:none;background:#f0fdfa;border:1px solid #99f6e4;border-radius:14px;padding:12px;color:#115e59;font-size:.86rem}.ocr-result{display:none;border:1px solid var(--line);border-radius:14px;padding:12px;background:#f8fafc;margin-top:12px}.ocr-result pre{white-space:pre-wrap;max-height:160px;overflow:auto;font-size:.75rem;color:#475569}
-.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);background:#0f172a;color:#fff;border-radius:999px;padding:11px 18px;font-size:.88rem;font-weight:800;opacity:0;pointer-events:none;transition:.18s;z-index:60}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.fab{display:none;position:fixed;right:18px;bottom:18px;z-index:25;width:52px;height:52px;border-radius:18px;background:var(--brand);border:0;color:#fff;font-size:1.6rem;box-shadow:0 16px 35px rgba(15,118,110,.32)}
-@media(max-width:900px){.hero,.grid{grid-template-columns:1fr}.patient-grid{grid-template-columns:1fr}.hero-main{min-height:auto}.hero h2{font-size:1.7rem}.top-inner{height:auto;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}.tabs{order:3;width:100%;margin-left:0}.tab{flex:1}.toolbar{grid-template-columns:1fr}.user-pill{margin-left:auto}}
-@media(max-width:560px){.wrap{padding:14px 12px 82px}.hero-main{padding:20px;border-radius:20px}.hero-side{grid-template-columns:1fr 1fr}.metric{padding:14px}.metric strong{font-size:1.55rem}.panel-head{align-items:flex-start}.form-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.reminder{grid-template-columns:auto 1fr}.reminder .tag{grid-column:2}.setting-row{align-items:flex-start;flex-direction:column}.fab{display:block}.top-inner{gap:10px}.logo small,.user-pill{display:none}}
+.tag{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:4px 9px;font-size:.76rem;font-weight:950;white-space:nowrap}.tag.danger{background:var(--rose-soft);color:var(--rose)}.tag.warn{background:var(--amber-soft);color:#92400e}.tag.ok{background:var(--green-soft);color:var(--green)}.tag.info{background:var(--violet-soft);color:var(--violet)}.tag.blue{background:var(--blue-soft);color:var(--blue)}.tag.muted{background:#f1f5f9;color:#475569}
+.toolbar{display:grid;grid-template-columns:1fr 160px 150px auto;gap:10px;margin-bottom:14px}.search{position:relative}.search input{padding-left:38px}.search:before{content:"⌕";position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#64748b;font-weight:950}
+.patient-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.patient-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:14px}
+.patient-top{display:flex;gap:12px;align-items:flex-start}.avatar{width:44px;height:44px;border-radius:14px;background:var(--teal-soft);color:var(--teal);display:grid;place-items:center;font-weight:950;font-size:1rem;flex:0 0 auto}.patient-name{font-weight:950;font-size:1.04rem}.patient-meta{color:var(--muted);font-size:.82rem;margin-top:3px}.patient-actions{margin-left:auto;display:flex;gap:4px}
+.med-list{display:grid;gap:8px}.med-row{border-radius:12px;background:#f8fafc;border:1px solid #eef2f7;padding:10px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.med-row.paused{background:#fafafa}.med-row.stopped{opacity:.72}.med-name{font-weight:950;font-size:.9rem}.med-info{color:var(--muted);font-size:.78rem;margin-top:2px}.card-foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}
+.detail-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:16px}.profile-box{background:#f8fafc;border:1px solid #eef2f7;border-radius:16px;padding:14px}.profile-box dl{margin:0;display:grid;gap:10px}.profile-box dt{color:var(--muted);font-size:.76rem;font-weight:850}.profile-box dd{margin:2px 0 0;font-weight:850}.timeline{display:grid;gap:8px}.timeline-item{display:grid;grid-template-columns:auto 1fr;gap:10px;border:1px solid var(--line);border-radius:13px;padding:10px;background:#fff}.timeline-item small{color:var(--muted);font-weight:800}.detail-med{border:1px solid var(--line);border-radius:16px;padding:12px;background:#fff;margin-bottom:10px}.detail-med-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.detail-med h4{margin:0}.detail-med p{margin:5px 0 0;color:var(--muted);font-size:.84rem}.detail-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.settings-list{display:grid;gap:12px}.setting-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.setting-row p{margin:3px 0 0;color:var(--muted);font-size:.84rem}.setting-row strong{font-size:.95rem}.setting-row input[type=number]{max-width:110px}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(15,23,42,.45);display:none;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal-box{width:min(680px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;box-shadow:0 30px 90px rgba(15,23,42,.26);padding:22px}.modal-box.wide{width:min(980px,100%)}.modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}.modal-title{font-size:1.15rem;font-weight:950}.modal-note{font-size:.84rem;color:var(--muted);margin-top:4px}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.span-2{grid-column:1/-1}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;flex-wrap:wrap}.preview{display:none;background:#f0fdfa;border:1px solid #99f6e4;border-radius:14px;padding:12px;color:#115e59;font-size:.86rem}.ocr-result{display:none;border:1px solid var(--line);border-radius:14px;padding:12px;background:#f8fafc;margin-top:12px}.ocr-result pre{white-space:pre-wrap;max-height:160px;overflow:auto;font-size:.75rem;color:#475569}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(16px);background:#0f172a;color:#fff;border-radius:999px;padding:11px 18px;font-size:.88rem;font-weight:850;opacity:0;pointer-events:none;transition:.18s;z-index:90}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.fab{display:none;position:fixed;right:18px;bottom:18px;z-index:35;width:52px;height:52px;border-radius:18px;background:var(--teal);border:0;color:#fff;font-size:1.6rem;box-shadow:0 16px 35px rgba(15,118,110,.32)}
+@media(max-width:980px){.hero,.layout,.detail-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.patient-grid{grid-template-columns:1fr}.top-inner{min-height:auto;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}.tabs{order:3;width:100%;margin-left:0}.tab{flex:1}.user-pill{margin-left:auto}}
+@media(max-width:580px){.wrap{padding:14px 12px 90px}.hero-main{padding:20px;border-radius:20px}.hero h2{font-size:1.65rem}.hero-side{grid-template-columns:1fr 1fr}.metric{padding:14px}.metric strong{font-size:1.48rem}.toolbar{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.reminder{grid-template-columns:auto 1fr}.reminder>.tag,.reminder>.btn{grid-column:2}.setting-row{align-items:flex-start;flex-direction:column}.fab{display:block}.logo small,.user-pill{display:none}.tabs{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;border-radius:18px;box-shadow:0 18px 45px rgba(15,23,42,.16);background:#fff}.tab{border-radius:14px}.modal{padding:10px}.modal-box{border-radius:18px;padding:18px}}
 </style>
 </head>
 <body>
 <div class="login" id="loginView">
   <div class="login-box">
-    <div class="brand-mark">药</div>
+    <div class="mark">药</div>
     <h1>慢病用药照护台</h1>
-    <p>为患者、药品余量和取药提醒建立一个更清楚的本地工作台。</p>
+    <p>集中管理患者、长期用药、取药历史和临近提醒。</p>
     <div id="loginForm">
       <div class="field"><label>用户名</label><input id="loginUser" autocomplete="username" placeholder="输入用户名"></div>
       <div class="field"><label>密码</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="输入密码"></div>
       <button class="btn primary" style="width:100%" onclick="doLogin()">登录</button>
       <div class="error" id="loginErr"></div>
-      <div class="switch">还没有账号？<a href="javascript:showRegister()">创建一个</a></div>
+      <div class="switch">还没有账号？<a href="javascript:showRegister()">创建账号</a></div>
     </div>
     <div id="registerForm" style="display:none">
       <div class="field"><label>用户名</label><input id="regUser" autocomplete="off" placeholder="至少 2 个字符"></div>
@@ -92,14 +81,14 @@ textarea{min-height:86px;resize:vertical}.error{display:none;color:var(--danger)
       <div class="error" id="regErr"></div>
       <div class="switch">已有账号？<a href="javascript:showLogin()">返回登录</a></div>
     </div>
-    <div class="hint">数据保存在当前浏览器。适合个人本地管理，不等同于医疗级加密系统。</div>
+    <div class="hint">数据保存在当前浏览器。建议定期导出备份。</div>
   </div>
 </div>
 
 <div class="app" id="appView">
   <header class="topbar">
     <div class="top-inner">
-      <div class="logo"><div class="logo-badge">药</div><div>慢病用药照护台<small>本地数据 · 取药提醒 · 患者跟进</small></div></div>
+      <div class="logo"><div class="logo-badge">药</div><div>慢病用药照护台<small>患者跟进 · 取药提醒 · 本地备份</small></div></div>
       <nav class="tabs">
         <button class="tab active" data-page="home">总览</button>
         <button class="tab" data-page="patients">患者</button>
@@ -108,25 +97,36 @@ textarea{min-height:86px;resize:vertical}.error{display:none;color:var(--danger)
       <div class="user-pill" id="userPill"></div>
     </div>
   </header>
-
   <main class="wrap">
     <section class="page active" id="pageHome">
       <div class="hero">
         <div class="hero-main">
           <div class="eyebrow">Care Desk</div>
           <h2 id="heroTitle">今天没有需要处理的取药提醒</h2>
-          <p id="heroText">添加患者和药品后，这里会自动显示最近需要跟进的事项。</p>
+          <p id="heroText">维护患者和药品信息后，系统会自动生成取药待办。</p>
           <div class="hero-actions">
             <button class="btn dark" onclick="openPatientModal()">添加患者</button>
             <button class="btn" onclick="openOcrModal()">处方识别</button>
+            <button class="btn" onclick="switchPage('patients')">查看患者</button>
           </div>
         </div>
         <div class="hero-side" id="metricBox"></div>
       </div>
-      <div class="grid">
+      <div class="layout">
         <section class="panel">
-          <div class="panel-head"><div><div class="panel-title">优先处理</div><div class="panel-sub">已超期和 7 天内需要取药的药品</div></div><span class="tag muted" id="reminderCount">0 项</span></div>
-          <div class="panel-body" id="reminderList"></div>
+          <div class="panel-head">
+            <div><div class="panel-title">今日待办</div><div class="panel-sub" id="taskSub">按紧急程度排序</div></div>
+            <span class="tag muted" id="taskCount">0 项</span>
+          </div>
+          <div class="panel-body">
+            <div class="task-tabs">
+              <button class="chip active" data-task="all" onclick="setTaskFilter('all')">全部</button>
+              <button class="chip" data-task="overdue" onclick="setTaskFilter('overdue')">已超期</button>
+              <button class="chip" data-task="soon" onclick="setTaskFilter('soon')">临近</button>
+              <button class="chip" data-task="empty" onclick="setTaskFilter('empty')">待补药品</button>
+            </div>
+            <div id="taskList"></div>
+          </div>
         </section>
         <section class="panel">
           <div class="panel-head"><div><div class="panel-title">最近取药记录</div><div class="panel-sub">用于快速回看续方情况</div></div></div>
@@ -143,6 +143,12 @@ textarea{min-height:86px;resize:vertical}.error{display:none;color:var(--danger)
           <option value="urgent">需要取药</option>
           <option value="normal">状态正常</option>
           <option value="empty">暂无用药</option>
+          <option value="paused">有暂停/停用</option>
+        </select>
+        <select id="sortMode" onchange="renderPatients()">
+          <option value="date">按取药时间</option>
+          <option value="name">按姓名</option>
+          <option value="meds">按药品数量</option>
         </select>
         <button class="btn primary" onclick="openPatientModal()">添加患者</button>
       </div>
@@ -151,12 +157,13 @@ textarea{min-height:86px;resize:vertical}.error{display:none;color:var(--danger)
 
     <section class="page" id="pageSettings">
       <section class="panel">
-        <div class="panel-head"><div><div class="panel-title">数据与账号</div><div class="panel-sub">备份、恢复和当前账号</div></div></div>
+        <div class="panel-head"><div><div class="panel-title">数据与规则</div><div class="panel-sub">备份、恢复、提醒规则和当前账号</div></div></div>
         <div class="panel-body settings-list">
-          <div class="setting-row"><div><strong>导出备份</strong><p>导出当前账号的患者、药品和取药记录。</p></div><button class="btn primary" onclick="exportData()">导出 JSON</button></div>
+          <div class="setting-row"><div><strong>提前提醒天数</strong><p>药品剩余天数小于等于这个数时，会进入待办。</p></div><div style="display:flex;gap:8px;align-items:center"><input id="remindDaysInput" type="number" min="1" max="60"><button class="btn primary" onclick="saveReminderDays()">保存</button></div></div>
+          <div class="setting-row"><div><strong>导出备份</strong><p>导出当前账号的患者、药品、取药记录和提醒设置。</p></div><button class="btn primary" onclick="exportData()">导出 JSON</button></div>
           <div class="setting-row"><div><strong>导入备份</strong><p>导入会覆盖当前账号的数据，建议先导出一份备份。</p></div><button class="btn" onclick="document.getElementById('importInput').click()">导入 JSON</button><input id="importInput" type="file" accept=".json,application/json" style="display:none" onchange="importData(event)"></div>
           <div class="setting-row"><div><strong>当前账号</strong><p id="accountInfo"></p></div><button class="btn danger" onclick="doLogout()">退出登录</button></div>
-          <div class="setting-row"><div><strong>说明</strong><p>提醒按药品开药日期、总数量和每日用量估算。实际用药请以医生医嘱为准。</p></div><span class="tag info">v4.0</span></div>
+          <div class="setting-row"><div><strong>使用说明</strong><p>取药日期由开药日期、当前余量和每日用量估算。暂停或停用的药品不会进入提醒。</p></div><span class="tag info">v5.0</span></div>
         </div>
       </section>
     </section>
@@ -164,137 +171,138 @@ textarea{min-height:86px;resize:vertical}.error{display:none;color:var(--danger)
   <button class="fab" onclick="openPatientModal()">+</button>
 </div>
 
-<div class="modal" id="patientModal">
-  <div class="modal-box">
-    <div class="modal-head"><div><div class="modal-title" id="patientModalTitle">添加患者</div><div class="modal-note">先建立患者，再添加长期用药。</div></div><button class="btn icon ghost" onclick="closeModal('patientModal')">×</button></div>
-    <div class="form-grid">
-      <div class="field"><label>姓名 *</label><input id="patientName" placeholder="例如：张三"></div>
-      <div class="field"><label>电话</label><input id="patientPhone" type="tel" placeholder="手机号或座机"></div>
-      <div class="field"><label>医保类型</label><select id="patientInsurance"><option>城镇职工</option><option>城乡居民</option><option>新农合</option><option>自费</option></select></div>
-      <div class="field"><label>医院</label><input id="patientHospital" placeholder="常去医院"></div>
-      <div class="field span-2"><label>备注</label><textarea id="patientNotes" placeholder="诊断、过敏史、用药注意事项等"></textarea></div>
-    </div>
-    <input type="hidden" id="editingPatientId">
-    <div class="modal-actions"><button class="btn" onclick="closeModal('patientModal')">取消</button><button class="btn primary" onclick="savePatient()">保存患者</button></div>
+<div class="modal" id="patientModal"><div class="modal-box">
+  <div class="modal-head"><div><div class="modal-title" id="patientModalTitle">添加患者</div><div class="modal-note">患者资料会参与搜索和详情展示。</div></div><button class="btn icon ghost" onclick="closeModal('patientModal')">×</button></div>
+  <div class="form-grid">
+    <div class="field"><label>姓名 *</label><input id="patientName" placeholder="例如：张三"></div>
+    <div class="field"><label>电话</label><input id="patientPhone" type="tel" placeholder="手机号或座机"></div>
+    <div class="field"><label>医保类型</label><select id="patientInsurance"><option>城镇职工</option><option>城乡居民</option><option>新农合</option><option>自费</option></select></div>
+    <div class="field"><label>医院</label><input id="patientHospital" placeholder="常去医院"></div>
+    <div class="field span-2"><label>备注</label><textarea id="patientNotes" placeholder="诊断、过敏史、用药注意事项等"></textarea></div>
   </div>
-</div>
+  <input type="hidden" id="editingPatientId">
+  <div class="modal-actions"><button class="btn" onclick="closeModal('patientModal')">取消</button><button class="btn primary" onclick="savePatient()">保存患者</button></div>
+</div></div>
 
-<div class="modal" id="medModal">
-  <div class="modal-box">
-    <div class="modal-head"><div><div class="modal-title" id="medModalTitle">添加药品</div><div class="modal-note" id="medModalNote"></div></div><button class="btn icon ghost" onclick="closeModal('medModal')">×</button></div>
-    <div class="form-grid">
-      <div class="field"><label>药品名 *</label><input id="medDrug" placeholder="例如：阿托伐他汀钙片"></div>
-      <div class="field"><label>规格</label><input id="medSpec" placeholder="例如：20mg × 7片"></div>
-      <div class="field"><label>本次开药总量 *</label><input id="medQty" type="number" step="0.5" placeholder="例如：90"></div>
-      <div class="field"><label>每日用量 *</label><input id="medDaily" type="number" step="0.5" placeholder="例如：1"></div>
-      <div class="field"><label>单位</label><select id="medUnit"><option>片</option><option>粒</option><option>支</option><option>袋</option><option>盒</option><option>ml</option></select></div>
-      <div class="field"><label>开药日期 *</label><input id="medStartDate" type="date"></div>
-      <div class="field span-2"><label>备注</label><textarea id="medNotes" placeholder="服用时间、饭前饭后、特殊说明"></textarea></div>
-      <div class="preview span-2" id="calcPreview"></div>
-    </div>
-    <input type="hidden" id="medPatientId"><input type="hidden" id="editingMedId">
-    <div class="modal-actions"><button class="btn" onclick="closeModal('medModal')">取消</button><button class="btn primary" onclick="saveMedication()">保存药品</button></div>
+<div class="modal" id="medModal"><div class="modal-box">
+  <div class="modal-head"><div><div class="modal-title" id="medModalTitle">添加药品</div><div class="modal-note" id="medModalNote"></div></div><button class="btn icon ghost" onclick="closeModal('medModal')">×</button></div>
+  <div class="form-grid">
+    <div class="field"><label>药品名 *</label><input id="medDrug" placeholder="例如：阿托伐他汀钙片"></div>
+    <div class="field"><label>规格</label><input id="medSpec" placeholder="例如：20mg × 7片"></div>
+    <div class="field"><label>当前/本次总量 *</label><input id="medQty" type="number" step="0.5" placeholder="例如：90"></div>
+    <div class="field"><label>每日用量 *</label><input id="medDaily" type="number" step="0.5" placeholder="例如：1"></div>
+    <div class="field"><label>单位</label><select id="medUnit"><option>片</option><option>粒</option><option>支</option><option>袋</option><option>盒</option><option>ml</option></select></div>
+    <div class="field"><label>开始计算日期 *</label><input id="medStartDate" type="date"></div>
+    <div class="field"><label>状态</label><select id="medStatus"><option value="active">正在服用</option><option value="paused">暂停</option><option value="stopped">已停用</option></select></div>
+    <div class="field"><label>停用/暂停原因</label><input id="medStatusNote" placeholder="例如：医生调整、换药"></div>
+    <div class="field span-2"><label>备注</label><textarea id="medNotes" placeholder="服用时间、饭前饭后、特殊说明"></textarea></div>
+    <div class="preview span-2" id="calcPreview"></div>
   </div>
-</div>
+  <input type="hidden" id="medPatientId"><input type="hidden" id="editingMedId">
+  <div class="modal-actions"><button class="btn" onclick="closeModal('medModal')">取消</button><button class="btn primary" onclick="saveMedication()">保存药品</button></div>
+</div></div>
 
-<div class="modal" id="pickupModal">
-  <div class="modal-box">
-    <div class="modal-head"><div><div class="modal-title">记录取药</div><div class="modal-note" id="pickupInfo"></div></div><button class="btn icon ghost" onclick="closeModal('pickupModal')">×</button></div>
-    <div class="form-grid">
-      <div class="field"><label>本次取药数量 *</label><input id="pickupQty" type="number" step="0.5"></div>
-      <div class="field"><label>取药日期</label><input id="pickupDate" type="date"></div>
-      <div class="field span-2"><label>备注</label><textarea id="pickupNotes" placeholder="例如：医生调整剂量、提前取药"></textarea></div>
-    </div>
-    <input type="hidden" id="pickupMedId">
-    <div class="modal-actions"><button class="btn" onclick="closeModal('pickupModal')">取消</button><button class="btn primary" onclick="savePickup()">确认记录</button></div>
+<div class="modal" id="pickupModal"><div class="modal-box">
+  <div class="modal-head"><div><div class="modal-title">记录取药</div><div class="modal-note" id="pickupInfo"></div></div><button class="btn icon ghost" onclick="closeModal('pickupModal')">×</button></div>
+  <div class="form-grid">
+    <div class="field"><label>本次取药数量 *</label><input id="pickupQty" type="number" step="0.5"></div>
+    <div class="field"><label>取药日期</label><input id="pickupDate" type="date"></div>
+    <div class="field span-2"><label>备注</label><textarea id="pickupNotes" placeholder="例如：医生调整剂量、提前取药"></textarea></div>
   </div>
-</div>
+  <input type="hidden" id="pickupMedId">
+  <div class="modal-actions"><button class="btn" onclick="closeModal('pickupModal')">取消</button><button class="btn primary" onclick="savePickup()">确认记录</button></div>
+</div></div>
 
-<div class="modal" id="ocrModal">
-  <div class="modal-box">
-    <div class="modal-head"><div><div class="modal-title">处方识别</div><div class="modal-note">上传清晰处方照片，识别后可填入患者信息。</div></div><button class="btn icon ghost" onclick="closeModal('ocrModal')">×</button></div>
-    <button class="btn primary" style="width:100%" onclick="document.getElementById('ocrFile').click()">选择图片</button>
-    <input type="file" id="ocrFile" accept="image/*" style="display:none" onchange="handleOcr(event)">
-    <div class="ocr-result" id="ocrResult"></div>
-    <div class="modal-actions"><button class="btn" onclick="applyOcrToForm()">填入患者表单</button><button class="btn primary" onclick="quickCreateFromOcr()">快速创建</button></div>
-  </div>
-</div>
+<div class="modal" id="detailModal"><div class="modal-box wide">
+  <div class="modal-head"><div><div class="modal-title" id="detailTitle">患者详情</div><div class="modal-note" id="detailNote"></div></div><button class="btn icon ghost" onclick="closeModal('detailModal')">×</button></div>
+  <div id="detailContent"></div>
+</div></div>
+
+<div class="modal" id="ocrModal"><div class="modal-box">
+  <div class="modal-head"><div><div class="modal-title">处方识别</div><div class="modal-note">识别结果需要人工确认后再保存。</div></div><button class="btn icon ghost" onclick="closeModal('ocrModal')">×</button></div>
+  <button class="btn primary" style="width:100%" onclick="document.getElementById('ocrFile').click()">选择图片</button>
+  <input type="file" id="ocrFile" accept="image/*" style="display:none" onchange="handleOcr(event)">
+  <div class="ocr-result" id="ocrResult"></div>
+  <div class="modal-actions"><button class="btn" onclick="applyOcrToForm()">填入患者表单</button><button class="btn primary" onclick="quickCreateFromOcr()">快速创建</button></div>
+</div></div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const REMIND_DAYS = 7;
-const ACCOUNT_KEY = "med_accounts_v1";
-const SESSION_KEY = "med_session_v1";
-const DATA_PREFIX = "med_data_";
-const LEGACY_KEY = "med_sys_v3";
-let currentUser = null;
-let ocrData = null;
-
+const ACCOUNT_KEY="med_accounts_v1",SESSION_KEY="med_session_v1",DATA_PREFIX="med_data_",LEGACY_KEY="med_sys_v3";
+let currentUser=null,taskFilter="all",ocrData=null;
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s||"").replace(/[&<>"']/g,function(m){return({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"})[m]})}
 function toast(msg){var t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(function(){t.classList.remove("show")},2300)}
-function hashPW(pw){var h=5381;for(var i=0;i<pw.length;i++){h=((h<<5)+h)+pw.charCodeAt(i);h=h|0}return "h"+Math.abs(h).toString(36)}
-function getAccounts(){try{return JSON.parse(localStorage.getItem(ACCOUNT_KEY))||{}}catch(e){return{}}}
-function saveAccounts(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
 function today(){return new Date().toISOString().split("T")[0]}
 function parseDate(s){var d=new Date((s||today())+"T00:00:00");return isNaN(d.getTime())?new Date(today()+"T00:00:00"):d}
 function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x}
 function diffDays(a,b){var x=parseDate(fmt(a)),y=parseDate(fmt(b));return Math.ceil((y.getTime()-x.getTime())/86400000)}
-function normalize(d){d=d||{};return{p:Array.isArray(d.p)?d.p:[],m:Array.isArray(d.m)?d.m:[],r:Array.isArray(d.r)?d.r:[]}}
+function hashPW(pw){var h=5381;for(var i=0;i<pw.length;i++){h=((h<<5)+h)+pw.charCodeAt(i);h=h|0}return "h"+Math.abs(h).toString(36)}
+function getAccounts(){try{return JSON.parse(localStorage.getItem(ACCOUNT_KEY))||{}}catch(e){return{}}}
+function saveAccounts(a){localStorage.setItem(ACCOUNT_KEY,JSON.stringify(a))}
+function normalize(d){d=d||{};var out={p:Array.isArray(d.p)?d.p:[],m:Array.isArray(d.m)?d.m:[],r:Array.isArray(d.r)?d.r:[],settings:d.settings||{}};out.settings.remindDays=Number(out.settings.remindDays)||7;out.m.forEach(function(m){if(!m.status)m.status="active";if(m.active===false)m.status="stopped";if(!m.unit)m.unit="片"});out.p.forEach(function(p){if(!p.insurance)p.insurance="城镇职工"});return out}
 function dataKey(){return DATA_PREFIX+(currentUser||"default")}
 function ld(){try{return normalize(JSON.parse(localStorage.getItem(dataKey())))}catch(e){return normalize()}}
 function sv(d){localStorage.setItem(dataKey(),JSON.stringify(normalize(d)))}
-function migrateLegacy(){var key=dataKey(),cur=ld();if(cur.p.length||cur.m.length||cur.r.length)return;try{var legacy=normalize(JSON.parse(localStorage.getItem(LEGACY_KEY)));if(legacy.p.length||legacy.m.length||legacy.r.length){localStorage.setItem(key,JSON.stringify(legacy));localStorage.setItem("med_migrated_"+currentUser,"1");toast("已接入旧版本地数据")}}catch(e){}}
+function settings(){return ld().settings}
+function remindDays(){return Number(settings().remindDays)||7}
+function migrateLegacy(){var d=ld();if(d.p.length||d.m.length||d.r.length)return;try{var old=normalize(JSON.parse(localStorage.getItem(LEGACY_KEY)));if(old.p.length||old.m.length||old.r.length){localStorage.setItem(dataKey(),JSON.stringify(old));toast("已接入旧版本地数据")}}catch(e){}}
 function gid(d){var mx=0;["p","m","r"].forEach(function(k){d[k].forEach(function(x){if(Number(x.id)>mx)mx=Number(x.id)})});return mx+1}
 function getPatient(d,id){return d.p.find(function(p){return Number(p.id)===Number(id)})}
 function getMed(d,id){return d.m.find(function(m){return Number(m.id)===Number(id)})}
 function medsOf(d,pid){return d.m.filter(function(m){return Number(m.pid)===Number(pid)})}
-function calcAt(m,onDate){var daily=Number(m.d)||0,total=Number(m.q)||0,start=parseDate(m.sd),at=parseDate(onDate||today());if(daily<=0){return{qty:total,daysLeft:999,nextDate:"--",diff:999,urgent:false,overdue:false,supply:0}}var elapsed=Math.max(0,diffDays(start,at));var remaining=Math.max(0,total-elapsed*daily);var supply=Math.floor(total/daily);var next=addDays(start,supply);var diff=diffDays(parseDate(today()),next);return{qty:Math.round(remaining*100)/100,daysLeft:Math.floor(remaining/daily),nextDate:fmt(next),diff:diff,urgent:diff<=REMIND_DAYS,overdue:diff<=0,supply:supply}}
-function statusTag(info){if(info.overdue)return '<span class="tag danger">超期 '+Math.abs(info.diff)+' 天</span>';if(info.urgent)return '<span class="tag warn">剩 '+info.diff+' 天</span>';return '<span class="tag ok">正常</span>'}
-function patientSummary(d,pt){var ms=medsOf(d,pt.id),infos=ms.map(calcAt).sort(function(a,b){return a.diff-b.diff});return{meds:ms,infos:infos,worst:infos[0]||null,urgent:infos.some(function(i){return i.urgent}),overdue:infos.some(function(i){return i.overdue})}}
+function isActive(m){return (m.status||"active")==="active"}
+function calcAt(m,onDate){var daily=Number(m.d)||0,total=Number(m.q)||0,start=parseDate(m.sd),at=parseDate(onDate||today());if(!isActive(m))return{qty:total,daysLeft:999,nextDate:"--",diff:999,urgent:false,overdue:false,supply:0,inactive:true};if(daily<=0)return{qty:total,daysLeft:999,nextDate:"--",diff:999,urgent:false,overdue:false,supply:0};var elapsed=Math.max(0,diffDays(start,at));var remaining=Math.max(0,total-elapsed*daily);var supply=Math.floor(total/daily);var next=addDays(start,supply);var diff=diffDays(parseDate(today()),next);return{qty:Math.round(remaining*100)/100,daysLeft:Math.floor(remaining/daily),nextDate:fmt(next),diff:diff,urgent:diff<=remindDays(),overdue:diff<=0,supply:supply}}
+function statusLabel(m){var s=m.status||"active";if(s==="paused")return '<span class="tag blue">暂停</span>';if(s==="stopped")return '<span class="tag muted">停用</span>';return ""}
+function statusTag(info){if(info.inactive)return '<span class="tag muted">不提醒</span>';if(info.overdue)return '<span class="tag danger">超期 '+Math.abs(info.diff)+' 天</span>';if(info.urgent)return '<span class="tag warn">剩 '+info.diff+' 天</span>';return '<span class="tag ok">正常</span>'}
+function patientSummary(d,pt){var ms=medsOf(d,pt.id),active=ms.filter(isActive),infos=active.map(calcAt).sort(function(a,b){return a.diff-b.diff});return{meds:ms,active:active,infos:infos,worst:infos[0]||null,urgent:infos.some(function(i){return i.urgent}),overdue:infos.some(function(i){return i.overdue}),inactive:ms.some(function(m){return !isActive(m)})}}
 
 function showRegister(){$("loginForm").style.display="none";$("registerForm").style.display="block";$("regErr").style.display="none"}
 function showLogin(){$("loginForm").style.display="block";$("registerForm").style.display="none";$("loginErr").style.display="none"}
 function doLogin(){var u=$("loginUser").value.trim(),p=$("loginPass").value,err=$("loginErr"),a=getAccounts();if(!u||!p){err.textContent="请输入用户名和密码";err.style.display="block";return}if(!a[u]){err.textContent="用户名不存在";err.style.display="block";return}if(a[u].pw!==hashPW(p)){err.textContent="密码错误";err.style.display="block";return}currentUser=u;localStorage.setItem(SESSION_KEY,JSON.stringify({user:u}));bootApp()}
-function doRegister(){var u=$("regUser").value.trim(),p=$("regPass").value,p2=$("regPass2").value,err=$("regErr"),a=getAccounts();if(u.length<2){err.textContent="用户名至少 2 个字符";err.style.display="block";return}if(p.length<3){err.textContent="密码至少 3 个字符";err.style.display="block";return}if(p!==p2){err.textContent="两次密码不一致";err.style.display="block";return}if(a[u]){err.textContent="用户名已存在";err.style.display="block";return}a[u]={pw:hashPW(p),created:today()};saveAccounts(a);currentUser=u;localStorage.setItem(SESSION_KEY,JSON.stringify({user:u}));sv({p:[],m:[],r:[]});bootApp()}
+function doRegister(){var u=$("regUser").value.trim(),p=$("regPass").value,p2=$("regPass2").value,err=$("regErr"),a=getAccounts();if(u.length<2){err.textContent="用户名至少 2 个字符";err.style.display="block";return}if(p.length<3){err.textContent="密码至少 3 个字符";err.style.display="block";return}if(p!==p2){err.textContent="两次密码不一致";err.style.display="block";return}if(a[u]){err.textContent="用户名已存在";err.style.display="block";return}a[u]={pw:hashPW(p),created:today()};saveAccounts(a);currentUser=u;localStorage.setItem(SESSION_KEY,JSON.stringify({user:u}));sv({p:[],m:[],r:[],settings:{remindDays:7}});bootApp()}
 function doLogout(){if(!confirm("确定退出当前账号？"))return;localStorage.removeItem(SESSION_KEY);currentUser=null;$("appView").style.display="none";$("loginView").style.display="flex";showLogin()}
 function checkSession(){try{var s=JSON.parse(localStorage.getItem(SESSION_KEY));if(s&&s.user){currentUser=s.user;bootApp();return}}catch(e){}$("loginView").style.display="flex"}
-function bootApp(){$("loginView").style.display="none";$("appView").style.display="block";$("userPill").textContent="当前账号："+currentUser;$("accountInfo").textContent="当前账号："+currentUser+"。数据只保存在这个浏览器中。";migrateLegacy();renderAll()}
+function bootApp(){$("loginView").style.display="none";$("appView").style.display="block";$("userPill").textContent="当前账号："+currentUser;migrateLegacy();$("remindDaysInput").value=remindDays();renderAll()}
 
 document.querySelectorAll(".tab").forEach(function(b){b.addEventListener("click",function(){switchPage(b.dataset.page)})});
-function switchPage(p){document.querySelectorAll(".tab").forEach(function(b){b.classList.toggle("active",b.dataset.page===p)});document.querySelectorAll(".page").forEach(function(x){x.classList.remove("active")});$("page"+p.charAt(0).toUpperCase()+p.slice(1)).classList.add("active");if(p==="patients")renderPatients();if(p==="home")renderHome()}
-function renderAll(){renderHome();renderPatients()}
-function renderHome(){var d=ld(),rem=[];d.m.forEach(function(m){var pt=getPatient(d,m.pid),info=calcAt(m);if(info.urgent)rem.push({m:m,pt:pt,info:info})});rem.sort(function(a,b){return a.info.diff-b.info.diff});var overdue=rem.filter(function(x){return x.info.overdue}).length;var noMeds=d.p.filter(function(p){return medsOf(d,p.id).length===0}).length;$("metricBox").innerHTML='<div class="metric"><strong>'+d.p.length+'</strong><span>患者</span></div><div class="metric"><strong>'+d.m.length+'</strong><span>长期用药</span></div><div class="metric"><strong style="color:'+(rem.length?'var(--danger)':'var(--brand)')+'">'+rem.length+'</strong><span>需跟进</span></div><div class="metric"><strong>'+noMeds+'</strong><span>暂无用药</span></div>';$("heroTitle").textContent=overdue?"有 "+overdue+" 项药品已超期":rem.length?"有 "+rem.length+" 项药品 7 天内需要取药":"今天没有需要处理的取药提醒";$("heroText").textContent=rem.length?"优先处理超期和临近用完的药品，记录取药后会重新计算下一次日期。":"目前状态平稳。继续维护患者和药品信息，系统会自动生成提醒。";$("reminderCount").textContent=rem.length+" 项";var box=$("reminderList");if(!rem.length){box.innerHTML='<div class="empty">暂无取药提醒。添加药品后，临近用完会出现在这里。</div>'}else{box.innerHTML=rem.map(function(x){var cls=x.info.overdue?"danger":"warn";return '<div class="reminder"><div class="dot '+cls+'">'+(x.info.overdue?'!':'7')+'</div><div><h3>'+esc(x.pt?x.pt.name:"未关联患者")+' · '+esc(x.m.drug)+'</h3><p>余量约 '+x.info.qty+esc(x.m.unit)+'，每日 '+esc(x.m.d)+esc(x.m.unit)+'，下次取药 '+x.info.nextDate+'</p></div>'+statusTag(x.info)+'<button class="btn sm primary" onclick="openPickupModal('+x.m.id+')">记录取药</button></div>'}).join("")}renderRecent(d)}
+function switchPage(p){document.querySelectorAll(".tab").forEach(function(b){b.classList.toggle("active",b.dataset.page===p)});document.querySelectorAll(".page").forEach(function(x){x.classList.remove("active")});$("page"+p.charAt(0).toUpperCase()+p.slice(1)).classList.add("active");if(p==="home")renderHome();if(p==="patients")renderPatients()}
+function renderAll(){renderHome();renderPatients();renderSettings()}
+function buildTasks(d){var tasks=[];d.m.forEach(function(m){var pt=getPatient(d,m.pid),info=calcAt(m);if(info.urgent)tasks.push({type:info.overdue?"overdue":"soon",m:m,pt:pt,info:info})});d.p.forEach(function(pt){if(medsOf(d,pt.id).length===0)tasks.push({type:"empty",pt:pt})});tasks.sort(function(a,b){var am=a.info?a.info.diff:998,bm=b.info?b.info.diff:998;return am-bm});return tasks}
+function setTaskFilter(f){taskFilter=f;document.querySelectorAll(".chip").forEach(function(c){c.classList.toggle("active",c.dataset.task===f)});renderHome()}
+function renderHome(){var d=ld(),tasks=buildTasks(d),visible=tasks.filter(function(t){return taskFilter==="all"||t.type===taskFilter}),overdue=tasks.filter(function(t){return t.type==="overdue"}).length,soon=tasks.filter(function(t){return t.type==="soon"}).length,empty=tasks.filter(function(t){return t.type==="empty"}).length,activeMeds=d.m.filter(isActive).length,stopped=d.m.length-activeMeds;$("metricBox").innerHTML='<div class="metric"><strong>'+d.p.length+'</strong><span>患者</span></div><div class="metric"><strong>'+activeMeds+'</strong><span>服用中药品</span></div><div class="metric"><strong style="color:'+(tasks.length?'var(--rose)':'var(--teal)')+'">'+tasks.length+'</strong><span>待处理</span></div><div class="metric"><strong>'+stopped+'</strong><span>暂停/停用</span></div>';$("heroTitle").textContent=overdue?"有 "+overdue+" 项药品已超期":soon?"有 "+soon+" 项药品临近取药":empty?"有 "+empty+" 位患者待补药品":"今天没有需要处理的取药提醒";$("heroText").textContent=tasks.length?"当前提醒规则为提前 "+remindDays()+" 天。处理取药记录后，下一次提醒会自动重算。":"状态平稳。继续维护患者资料和药品余量，系统会自动生成待办。";$("taskCount").textContent=visible.length+" 项";$("taskSub").textContent="提前 "+remindDays()+" 天提醒";var box=$("taskList");if(!visible.length){box.innerHTML='<div class="empty">当前筛选下没有待办。</div>'}else{box.innerHTML=visible.map(function(t){if(t.type==="empty")return '<div class="reminder"><div class="dot gray">补</div><div><h3>'+esc(t.pt.name)+'</h3><p>还没有录入药品，建议补全长期用药。</p></div><span class="tag muted">待补</span><button class="btn sm primary" onclick="openMedModal('+t.pt.id+')">添加药品</button></div>';var cls=t.info.overdue?"danger":"warn";return '<div class="reminder"><div class="dot '+cls+'">'+(t.info.overdue?'!':'近')+'</div><div><h3>'+esc(t.pt?t.pt.name:"未关联患者")+' · '+esc(t.m.drug)+'</h3><p>余量约 '+t.info.qty+esc(t.m.unit)+'，每日 '+esc(t.m.d)+esc(t.m.unit)+'，下次取药 '+t.info.nextDate+'</p></div>'+statusTag(t.info)+'<button class="btn sm primary" onclick="openPickupModal('+t.m.id+')">记录取药</button></div>'}).join("")}renderRecent(d)}
 function renderRecent(d){var rows=[];d.r.forEach(function(r){var m=getMed(d,r.mid),pt=m?getPatient(d,m.pid):null;rows.push({r:r,m:m,pt:pt})});rows.sort(function(a,b){return String(b.r.date).localeCompare(String(a.r.date))});rows=rows.slice(0,8);$("recentList").innerHTML=rows.length?rows.map(function(x){return '<div class="reminder"><div class="dot ok">✓</div><div><h3>'+esc(x.pt?x.pt.name:"未知患者")+' · '+esc(x.m?x.m.drug:"已删除药品")+'</h3><p>'+esc(x.r.date)+' 取药 '+esc(x.r.qty)+(x.m?esc(x.m.unit):'')+(x.r.notes?' · '+esc(x.r.notes):'')+'</p></div><span class="tag ok">已记录</span></div>'}).join(""):'<div class="empty">暂无取药记录。</div>'}
-function renderPatients(){var d=ld(),q=($("searchInput").value||"").trim().toLowerCase(),filter=$("statusFilter").value,items=d.p.map(function(pt){return{pt:pt,sum:patientSummary(d,pt)}});items=items.filter(function(x){var hay=[x.pt.name,x.pt.phone,x.pt.insurance,x.pt.hospital,x.pt.notes].concat(x.sum.meds.map(function(m){return m.drug+" "+(m.spec||"")})).join(" ").toLowerCase();if(q&&hay.indexOf(q)===-1)return false;if(filter==="urgent")return x.sum.urgent;if(filter==="normal")return x.sum.meds.length&& !x.sum.urgent;if(filter==="empty")return !x.sum.meds.length;return true});items.sort(function(a,b){var ad=a.sum.worst?a.sum.worst.diff:999,bd=b.sum.worst?b.sum.worst.diff:999;return ad-bd});var grid=$("patientGrid");if(!items.length){grid.innerHTML='<section class="panel" style="grid-column:1/-1"><div class="empty">没有匹配的患者。可以调整搜索条件，或添加新患者。</div></section>';return}grid.innerHTML=items.map(function(x){var pt=x.pt,ms=x.sum.meds.slice(0,3),initial=esc((pt.name||"?").slice(0,1)),meta=[pt.phone,pt.insurance,pt.hospital].filter(Boolean).map(esc).join(" · ");var medHtml=ms.length?ms.map(function(m){var info=calcAt(m);return '<div class="med-row"><div><div class="med-name">'+esc(m.drug)+'</div><div class="med-info">余量约 '+info.qty+esc(m.unit)+' · 下次 '+info.nextDate+'</div></div>'+statusTag(info)+'</div>'}).join(""):'<div class="med-row"><div><div class="med-name">暂无用药</div><div class="med-info">添加药品后会自动计算取药提醒</div></div><span class="tag muted">空</span></div>';return '<article class="patient-card"><div class="patient-top"><div class="avatar">'+initial+'</div><div><div class="patient-name">'+esc(pt.name)+'</div><div class="patient-meta">'+(meta||"未填写更多信息")+'</div></div><div class="patient-actions"><button class="btn icon ghost" title="编辑" onclick="openPatientModal('+pt.id+')">✎</button><button class="btn icon ghost" title="删除" onclick="deletePatient('+pt.id+')">×</button></div></div><div class="med-list">'+medHtml+'</div><div class="card-foot"><button class="btn sm primary" onclick="openMedModal('+pt.id+')">添加药品</button>'+(x.sum.meds.length?'<button class="btn sm" onclick="openFirstPickup('+pt.id+')">记录取药</button>':'')+'<button class="btn sm ghost" onclick="showPatientDetail('+pt.id+')">查看详情</button></div></article>'}).join("")}
-function showPatientDetail(pid){var d=ld(),pt=getPatient(d,pid);if(!pt)return;var ms=medsOf(d,pid);var lines=ms.length?ms.map(function(m){var info=calcAt(m);return m.drug+"：余量约 "+info.qty+m.unit+"，下次 "+info.nextDate}).join("\n"):"暂无用药";alert(pt.name+"\n"+(pt.phone||"无电话")+"\n\n"+lines)}
-function openFirstPickup(pid){var d=ld(),ms=medsOf(d,pid).sort(function(a,b){return calcAt(a).diff-calcAt(b).diff});if(ms[0])openPickupModal(ms[0].id)}
+function renderPatients(){var d=ld(),q=($("searchInput").value||"").trim().toLowerCase(),filter=$("statusFilter").value,sort=$("sortMode").value,items=d.p.map(function(pt){return{pt:pt,sum:patientSummary(d,pt)}});items=items.filter(function(x){var hay=[x.pt.name,x.pt.phone,x.pt.insurance,x.pt.hospital,x.pt.notes].concat(x.sum.meds.map(function(m){return m.drug+" "+(m.spec||"")})).join(" ").toLowerCase();if(q&&hay.indexOf(q)===-1)return false;if(filter==="urgent")return x.sum.urgent;if(filter==="normal")return x.sum.active.length&&!x.sum.urgent;if(filter==="empty")return !x.sum.meds.length;if(filter==="paused")return x.sum.inactive;return true});items.sort(function(a,b){if(sort==="name")return String(a.pt.name).localeCompare(String(b.pt.name),"zh-Hans-CN");if(sort==="meds")return b.sum.meds.length-a.sum.meds.length;var ad=a.sum.worst?a.sum.worst.diff:999,bd=b.sum.worst?b.sum.worst.diff:999;return ad-bd});var grid=$("patientGrid");if(!items.length){grid.innerHTML='<section class="panel" style="grid-column:1/-1"><div class="empty">没有匹配的患者。</div></section>';return}grid.innerHTML=items.map(patientCardHtml).join("")}
+function patientCardHtml(x){var pt=x.pt,ms=x.sum.meds.slice(0,3),initial=esc((pt.name||"?").slice(0,1)),meta=[pt.phone,pt.insurance,pt.hospital].filter(Boolean).map(esc).join(" · "),medHtml=ms.length?ms.map(function(m){var info=calcAt(m),cls=m.status==="paused"?" paused":m.status==="stopped"?" stopped":"";return '<div class="med-row'+cls+'"><div><div class="med-name">'+esc(m.drug)+' '+statusLabel(m)+'</div><div class="med-info">'+(isActive(m)?'余量约 '+info.qty+esc(m.unit)+' · 下次 '+info.nextDate:(m.statusNote?esc(m.statusNote):'不参与提醒'))+'</div></div>'+statusTag(info)+'</div>'}).join(""):'<div class="med-row"><div><div class="med-name">暂无用药</div><div class="med-info">添加药品后会自动计算取药提醒</div></div><span class="tag muted">空</span></div>';return '<article class="patient-card"><div class="patient-top"><div class="avatar">'+initial+'</div><div><div class="patient-name">'+esc(pt.name)+'</div><div class="patient-meta">'+(meta||"未填写更多信息")+'</div></div><div class="patient-actions"><button class="btn icon ghost" title="编辑" onclick="openPatientModal('+pt.id+')">✎</button><button class="btn icon ghost" title="删除" onclick="deletePatient('+pt.id+')">×</button></div></div><div class="med-list">'+medHtml+'</div><div class="card-foot"><button class="btn sm primary" onclick="showPatientDetail('+pt.id+')">详情</button><button class="btn sm" onclick="openMedModal('+pt.id+')">添加药品</button>'+(x.sum.active.length?'<button class="btn sm" onclick="openFirstPickup('+pt.id+')">记录取药</button>':'')+'</div></article>'}
+function showPatientDetail(pid){var d=ld(),pt=getPatient(d,pid);if(!pt)return;var ms=medsOf(d,pid),records=d.r.filter(function(r){return ms.some(function(m){return Number(m.id)===Number(r.mid)})}).sort(function(a,b){return String(b.date).localeCompare(String(a.date))});$("detailTitle").textContent=pt.name;$("detailNote").textContent=[pt.phone,pt.insurance,pt.hospital].filter(Boolean).join(" · ")||"患者详情";var medHtml=ms.length?ms.map(function(m){var info=calcAt(m);return '<div class="detail-med"><div class="detail-med-head"><div><h4>'+esc(m.drug)+' '+statusLabel(m)+'</h4><p>'+esc(m.spec||"无规格")+' · '+(isActive(m)?'余量约 '+info.qty+esc(m.unit)+' · 下次 '+info.nextDate:(m.statusNote?esc(m.statusNote):'不参与提醒'))+'</p></div>'+statusTag(info)+'</div><div class="detail-actions"><button class="btn sm primary" '+(!isActive(m)?'disabled':'')+' onclick="openPickupModal('+m.id+')">记录取药</button><button class="btn sm" onclick="openMedModal('+pt.id+','+m.id+')">编辑</button>'+(m.status==="active"?'<button class="btn sm" onclick="changeMedStatus('+m.id+',&quot;paused&quot;)">暂停</button><button class="btn sm" onclick="changeMedStatus('+m.id+',&quot;stopped&quot;)">停用</button>':'<button class="btn sm primary" onclick="changeMedStatus('+m.id+',&quot;active&quot;)">恢复服用</button>')+'<button class="btn sm danger" onclick="deleteMed('+m.id+')">删除</button></div></div>'}).join(""):'<div class="empty">暂无药品。</div>';var timeline=records.length?records.slice(0,12).map(function(r){var m=getMed(d,r.mid);return '<div class="timeline-item"><div class="dot ok">取</div><div><strong>'+esc(m?m.drug:"已删除药品")+'</strong><br><small>'+esc(r.date)+' · +'+esc(r.qty)+(m?esc(m.unit):'')+(r.notes?' · '+esc(r.notes):'')+'</small></div></div>'}).join(""):'<div class="empty">暂无取药记录。</div>';$("detailContent").innerHTML='<div class="detail-grid"><div><div class="profile-box"><dl><div><dt>电话</dt><dd>'+esc(pt.phone||"未填写")+'</dd></div><div><dt>医保</dt><dd>'+esc(pt.insurance||"未填写")+'</dd></div><div><dt>医院</dt><dd>'+esc(pt.hospital||"未填写")+'</dd></div><div><dt>备注</dt><dd>'+esc(pt.notes||"无")+'</dd></div></dl></div><div class="detail-actions"><button class="btn primary" onclick="openMedModal('+pt.id+')">添加药品</button><button class="btn" onclick="openPatientModal('+pt.id+')">编辑患者</button></div></div><div><div class="panel-title" style="margin-bottom:10px">当前药品</div>'+medHtml+'<div class="panel-title" style="margin:16px 0 10px">取药时间线</div><div class="timeline">'+timeline+'</div></div></div>';openModal("detailModal")}
+function openFirstPickup(pid){var d=ld(),ms=medsOf(d,pid).filter(isActive).sort(function(a,b){return calcAt(a).diff-calcAt(b).diff});if(ms[0])openPickupModal(ms[0].id)}
 
 function openModal(id){$(id).classList.add("show")}function closeModal(id){$(id).classList.remove("show")}
 document.querySelectorAll(".modal").forEach(function(m){m.addEventListener("click",function(e){if(e.target===m)m.classList.remove("show")})});
 function openPatientModal(id){var d=ld(),pt=id?getPatient(d,id):null;$("patientModalTitle").textContent=pt?"编辑患者":"添加患者";$("editingPatientId").value=pt?pt.id:"";$("patientName").value=pt?pt.name:"";$("patientPhone").value=pt?(pt.phone||""):"";$("patientInsurance").value=pt?(pt.insurance||"城镇职工"):"城镇职工";$("patientHospital").value=pt?(pt.hospital||""):"";$("patientNotes").value=pt?(pt.notes||""):"";openModal("patientModal");setTimeout(function(){$("patientName").focus()},80)}
-function savePatient(){var name=$("patientName").value.trim();if(!name){toast("请填写患者姓名");return}var d=ld(),id=$("editingPatientId").value;var data={name:name,phone:$("patientPhone").value.trim(),insurance:$("patientInsurance").value,hospital:$("patientHospital").value.trim(),notes:$("patientNotes").value.trim()};if(id){var pt=getPatient(d,id);if(pt)Object.assign(pt,data)}else{data.id=gid(d);d.p.push(data)}sv(d);closeModal("patientModal");renderAll();toast(id?"患者信息已更新":"患者已添加")}
-function deletePatient(id){var d=ld(),pt=getPatient(d,id);if(!pt)return;if(!confirm("删除 "+pt.name+" 及其所有药品记录？"))return;var mids=medsOf(d,id).map(function(m){return Number(m.id)});d.p=d.p.filter(function(p){return Number(p.id)!==Number(id)});d.m=d.m.filter(function(m){return Number(m.pid)!==Number(id)});d.r=d.r.filter(function(r){return mids.indexOf(Number(r.mid))===-1});sv(d);renderAll();toast("已删除患者")}
-function openMedModal(pid,mid){var d=ld(),pt=getPatient(d,pid),m=mid?getMed(d,mid):null;if(!pt)return;$("medModalTitle").textContent=m?"编辑药品":"添加药品";$("medModalNote").textContent="患者："+pt.name;$("medPatientId").value=pid;$("editingMedId").value=m?m.id:"";$("medDrug").value=m?m.drug:"";$("medSpec").value=m?(m.spec||""):"";$("medQty").value=m?m.q:"";$("medDaily").value=m?m.d:"";$("medUnit").value=m?(m.unit||"片"):"片";$("medStartDate").value=m?(m.sd||today()):today();$("medNotes").value=m?(m.no||""):"";updatePreview();openModal("medModal");setTimeout(function(){$("medDrug").focus()},80)}
-["medQty","medDaily","medStartDate"].forEach(function(id){document.addEventListener("input",function(e){if(e.target&&e.target.id===id)updatePreview()})});
-function updatePreview(){var q=Number($("medQty").value),d=Number($("medDaily").value),sd=$("medStartDate").value,box=$("calcPreview");if(!q||!d||!sd){box.style.display="none";return}var temp={q:q,d:d,sd:sd,unit:$("medUnit").value},info=calcAt(temp);box.style.display="block";box.innerHTML="预计可用 "+info.supply+" 天，下次取药日期 "+info.nextDate+"，当前余量约 "+info.qty+esc(temp.unit)+"。"}
-function saveMedication(){var drug=$("medDrug").value.trim(),q=Number($("medQty").value),daily=Number($("medDaily").value),pid=Number($("medPatientId").value),eid=$("editingMedId").value;if(!drug){toast("请填写药品名");return}if(!q||q<=0){toast("请填写有效总量");return}if(!daily||daily<=0){toast("请填写每日用量");return}var d=ld();if(eid){var m=getMed(d,eid);if(m){m.drug=drug;m.spec=$("medSpec").value.trim();m.q=q;m.d=daily;m.unit=$("medUnit").value;m.sd=$("medStartDate").value||today();m.no=$("medNotes").value.trim()}}else{d.m.push({id:gid(d),pid:pid,drug:drug,spec:$("medSpec").value.trim(),q:q,d:daily,unit:$("medUnit").value,sd:$("medStartDate").value||today(),no:$("medNotes").value.trim()})}sv(d);closeModal("medModal");renderAll();toast(eid?"药品已更新":"药品已添加")}
-function deleteMed(id){var d=ld(),m=getMed(d,id);if(!m)return;if(!confirm("删除该药品记录？"))return;d.m=d.m.filter(function(x){return Number(x.id)!==Number(id)});d.r=d.r.filter(function(r){return Number(r.mid)!==Number(id)});sv(d);renderAll();toast("已删除药品")}
-function openPickupModal(mid){var d=ld(),m=getMed(d,mid);if(!m)return;var pt=getPatient(d,m.pid),info=calcAt(m);$("pickupMedId").value=mid;$("pickupDate").value=today();$("pickupQty").value="";$("pickupNotes").value="";$("pickupInfo").innerHTML="<b>"+esc(pt?pt.name:"未知患者")+"</b> · "+esc(m.drug)+"<br>当前余量约 "+info.qty+esc(m.unit)+"，下次取药 "+info.nextDate;openModal("pickupModal");setTimeout(function(){$("pickupQty").focus()},80)}
-function savePickup(){var qty=Number($("pickupQty").value),date=$("pickupDate").value||today(),mid=Number($("pickupMedId").value),notes=$("pickupNotes").value.trim();if(!qty||qty<=0){toast("请填写取药数量");return}var d=ld(),m=getMed(d,mid);if(!m){toast("未找到药品");return}var before=calcAt(m,date);d.r.push({id:gid(d),mid:mid,date:date,qty:qty,notes:notes});m.q=Math.round((before.qty+qty)*100)/100;m.sd=date;sv(d);closeModal("pickupModal");renderAll();toast("取药记录已保存")}
-
+function savePatient(){var name=$("patientName").value.trim();if(!name){toast("请填写患者姓名");return}var d=ld(),id=$("editingPatientId").value,data={name:name,phone:$("patientPhone").value.trim(),insurance:$("patientInsurance").value,hospital:$("patientHospital").value.trim(),notes:$("patientNotes").value.trim()};if(id){var pt=getPatient(d,id);if(pt)Object.assign(pt,data)}else{data.id=gid(d);d.p.push(data)}sv(d);closeModal("patientModal");renderAll();toast(id?"患者信息已更新":"患者已添加")}
+function deletePatient(id){var d=ld(),pt=getPatient(d,id);if(!pt)return;if(!confirm("删除 "+pt.name+" 及其所有药品和取药记录？"))return;var mids=medsOf(d,id).map(function(m){return Number(m.id)});d.p=d.p.filter(function(p){return Number(p.id)!==Number(id)});d.m=d.m.filter(function(m){return Number(m.pid)!==Number(id)});d.r=d.r.filter(function(r){return mids.indexOf(Number(r.mid))===-1});sv(d);closeModal("detailModal");renderAll();toast("已删除患者")}
+function openMedModal(pid,mid){var d=ld(),pt=getPatient(d,pid),m=mid?getMed(d,mid):null;if(!pt)return;$("medModalTitle").textContent=m?"编辑药品":"添加药品";$("medModalNote").textContent="患者："+pt.name;$("medPatientId").value=pid;$("editingMedId").value=m?m.id:"";$("medDrug").value=m?m.drug:"";$("medSpec").value=m?(m.spec||""):"";$("medQty").value=m?m.q:"";$("medDaily").value=m?m.d:"";$("medUnit").value=m?(m.unit||"片"):"片";$("medStartDate").value=m?(m.sd||today()):today();$("medStatus").value=m?(m.status||"active"):"active";$("medStatusNote").value=m?(m.statusNote||""):"";$("medNotes").value=m?(m.no||""):"";updatePreview();openModal("medModal");setTimeout(function(){$("medDrug").focus()},80)}
+["medQty","medDaily","medStartDate","medStatus"].forEach(function(id){document.addEventListener("input",function(e){if(e.target&&e.target.id===id)updatePreview()});document.addEventListener("change",function(e){if(e.target&&e.target.id===id)updatePreview()})});
+function updatePreview(){var q=Number($("medQty").value),d=Number($("medDaily").value),sd=$("medStartDate").value,box=$("calcPreview"),st=$("medStatus").value;if(st!=="active"){box.style.display="block";box.innerHTML="暂停或停用的药品不会进入首页待办，也不会触发取药提醒。";return}if(!q||!d||!sd){box.style.display="none";return}var temp={q:q,d:d,sd:sd,unit:$("medUnit").value,status:"active"},info=calcAt(temp);box.style.display="block";box.innerHTML="预计可用 "+info.supply+" 天，下次取药日期 "+info.nextDate+"，当前余量约 "+info.qty+esc(temp.unit)+"。"}
+function saveMedication(){var drug=$("medDrug").value.trim(),q=Number($("medQty").value),daily=Number($("medDaily").value),pid=Number($("medPatientId").value),eid=$("editingMedId").value;if(!drug){toast("请填写药品名");return}if(!q||q<=0){toast("请填写有效总量");return}if(!daily||daily<=0){toast("请填写每日用量");return}var d=ld(),data={drug:drug,spec:$("medSpec").value.trim(),q:q,d:daily,unit:$("medUnit").value,sd:$("medStartDate").value||today(),status:$("medStatus").value,statusNote:$("medStatusNote").value.trim(),no:$("medNotes").value.trim()};if(eid){var m=getMed(d,eid);if(m)Object.assign(m,data)}else{data.id=gid(d);data.pid=pid;d.m.push(data)}sv(d);closeModal("medModal");renderAll();if($("detailModal").classList.contains("show"))showPatientDetail(pid);toast(eid?"药品已更新":"药品已添加")}
+function changeMedStatus(id,status){var d=ld(),m=getMed(d,id);if(!m)return;m.status=status;if(status!=="active"&&!m.statusNote)m.statusNote=status==="paused"?"暂停服用":"已停用";if(status==="active")m.statusNote="";sv(d);renderAll();showPatientDetail(m.pid);toast(status==="active"?"已恢复提醒":"已更新药品状态")}
+function deleteMed(id){var d=ld(),m=getMed(d,id);if(!m)return;if(!confirm("删除该药品和相关取药记录？"))return;var pid=m.pid;d.m=d.m.filter(function(x){return Number(x.id)!==Number(id)});d.r=d.r.filter(function(r){return Number(r.mid)!==Number(id)});sv(d);renderAll();showPatientDetail(pid);toast("已删除药品")}
+function openPickupModal(mid){var d=ld(),m=getMed(d,mid);if(!m)return;if(!isActive(m)){toast("暂停或停用药品不能记录取药");return}var pt=getPatient(d,m.pid),info=calcAt(m);$("pickupMedId").value=mid;$("pickupDate").value=today();$("pickupQty").value="";$("pickupNotes").value="";$("pickupInfo").innerHTML="<b>"+esc(pt?pt.name:"未知患者")+"</b> · "+esc(m.drug)+"<br>当前余量约 "+info.qty+esc(m.unit)+"，下次取药 "+info.nextDate;openModal("pickupModal");setTimeout(function(){$("pickupQty").focus()},80)}
+function savePickup(){var qty=Number($("pickupQty").value),date=$("pickupDate").value||today(),mid=Number($("pickupMedId").value),notes=$("pickupNotes").value.trim();if(!qty||qty<=0){toast("请填写取药数量");return}var d=ld(),m=getMed(d,mid);if(!m){toast("未找到药品");return}var before=calcAt(m,date);d.r.push({id:gid(d),mid:mid,date:date,qty:qty,notes:notes});m.q=Math.round((before.qty+qty)*100)/100;m.sd=date;m.status="active";sv(d);closeModal("pickupModal");renderAll();if($("detailModal").classList.contains("show"))showPatientDetail(m.pid);toast("取药记录已保存")}
+function renderSettings(){var d=ld();$("remindDaysInput").value=d.settings.remindDays;$("accountInfo").textContent="当前账号："+currentUser+"。数据只保存在这个浏览器中。"}
+function saveReminderDays(){var v=Number($("remindDaysInput").value);if(!v||v<1||v>60){toast("提醒天数请输入 1 到 60");return}var d=ld();d.settings.remindDays=v;sv(d);renderAll();toast("提醒规则已保存")}
 function exportData(){var d=ld(),blob=new Blob([JSON.stringify(d,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="药品管理备份_"+currentUser+"_"+today()+".json";a.click();URL.revokeObjectURL(url);toast("备份已导出")}
 function importData(ev){var f=ev.target.files[0];ev.target.value="";if(!f)return;if(!confirm("导入会覆盖当前账号数据，确认继续？"))return;var r=new FileReader();r.onload=function(e){try{var d=normalize(JSON.parse(e.target.result));sv(d);renderAll();toast("导入成功")}catch(err){toast("文件解析失败")}};r.readAsText(f)}
 
 function openOcrModal(){ocrData=null;$("ocrResult").style.display="none";$("ocrResult").innerHTML="";openModal("ocrModal")}
-async function handleOcr(ev){var f=ev.target.files[0];ev.target.value="";if(!f)return;if(!window.Tesseract){toast("OCR 库未加载，请联网后重试");return}$("ocrResult").style.display="block";$("ocrResult").innerHTML="正在识别，请稍候...";try{var res=await Tesseract.recognize(f,"chi_sim");ocrData=parseOcr(res.data.text);renderOcrResult(res.data.text)}catch(e){$("ocrResult").innerHTML='<span style="color:var(--danger)">识别失败：'+esc(e.message)+'</span>'}}
+async function handleOcr(ev){var f=ev.target.files[0];ev.target.value="";if(!f)return;if(!window.Tesseract){toast("OCR 库未加载，请联网后重试");return}$("ocrResult").style.display="block";$("ocrResult").innerHTML="正在识别，请稍候...";try{var res=await Tesseract.recognize(f,"chi_sim");ocrData=parseOcr(res.data.text);renderOcrResult(res.data.text)}catch(e){$("ocrResult").innerHTML='<span style="color:var(--rose)">识别失败：'+esc(e.message)+'</span>'}}
 function parseOcr(text){var r={name:"",phone:"",insurance:"",hospital:"",date:"",meds:[]};var name=text.match(/(?:姓名|患者|病人)[:：\s]*([\u4e00-\u9fa5]{2,4})/);if(name)r.name=name[1];var phone=text.match(/1[3-9]\d{9}/);if(phone)r.phone=phone[0];var hospital=text.match(/([\u4e00-\u9fa5]{2,18}(?:医院|卫生院|诊所|保健院|医疗中心))/);if(hospital)r.hospital=hospital[1];var ins=text.match(/城镇职工|城乡居民|新农合|自费|职工医保|居民医保/);if(ins)r.insurance=ins[0].replace("职工医保","城镇职工").replace("居民医保","城乡居民");var dm=text.match(/(\d{4})[年\-./](\d{1,2})[月\-./](\d{1,2})/);if(dm)r.date=dm[1]+"-"+dm[2].padStart(2,"0")+"-"+dm[3].padStart(2,"0");text.split(/\n/).forEach(function(line){var s=line.trim();var m=s.match(/([\u4e00-\u9fa5A-Za-z]{2,24}(?:片|胶囊|丸|颗粒|口服液|注射液|滴眼液|贴|膏|散|冲剂))[^0-9]*(\d+\.?\d*)?/);if(m){var n=m[1];if(!r.meds.some(function(x){return x.name===n}))r.meds.push({name:n,qty:Number(m[2])||30,daily:1,spec:""})}});return r}
 function renderOcrResult(raw){var d=ocrData,h="";if(d.name)h+="<div>姓名：<b>"+esc(d.name)+"</b></div>";if(d.phone)h+="<div>电话："+esc(d.phone)+"</div>";if(d.hospital)h+="<div>医院："+esc(d.hospital)+"</div>";if(d.insurance)h+="<div>医保："+esc(d.insurance)+"</div>";if(d.date)h+="<div>日期："+esc(d.date)+"</div>";h+='<div style="margin-top:10px;font-weight:900">识别到 '+d.meds.length+' 种药品</div>';d.meds.forEach(function(m,i){h+='<div style="padding:4px 0">'+(i+1)+'. '+esc(m.name)+'</div>'});h+='<details style="margin-top:10px"><summary>查看识别原文</summary><pre>'+esc(raw)+'</pre></details>';$("ocrResult").innerHTML=h}
 function applyOcrToForm(){if(!ocrData){toast("请先识别处方");return}closeModal("ocrModal");openPatientModal();if(ocrData.name)$("patientName").value=ocrData.name;if(ocrData.phone)$("patientPhone").value=ocrData.phone;if(ocrData.insurance)$("patientInsurance").value=ocrData.insurance;if(ocrData.hospital)$("patientHospital").value=ocrData.hospital;toast("已填入患者表单")}
-function quickCreateFromOcr(){if(!ocrData||!ocrData.name){toast("未识别到患者姓名");return}var d=ld(),pid=gid(d);d.p.push({id:pid,name:ocrData.name,phone:ocrData.phone||"",insurance:ocrData.insurance||"城镇职工",hospital:ocrData.hospital||"",notes:"OCR 创建"});ocrData.meds.forEach(function(m){d.m.push({id:gid(d),pid:pid,drug:m.name,spec:m.spec||"",q:m.qty||30,d:m.daily||1,unit:"片",sd:ocrData.date||today(),no:"OCR 识别"})});sv(d);closeModal("ocrModal");switchPage("patients");renderAll();toast("已创建患者和药品")}
-
+function quickCreateFromOcr(){if(!ocrData||!ocrData.name){toast("未识别到患者姓名");return}var d=ld(),pid=gid(d);d.p.push({id:pid,name:ocrData.name,phone:ocrData.phone||"",insurance:ocrData.insurance||"城镇职工",hospital:ocrData.hospital||"",notes:"OCR 创建"});ocrData.meds.forEach(function(m){d.m.push({id:gid(d),pid:pid,drug:m.name,spec:m.spec||"",q:m.qty||30,d:m.daily||1,unit:"片",sd:ocrData.date||today(),status:"active",statusNote:"",no:"OCR 识别"})});sv(d);closeModal("ocrModal");switchPage("patients");renderAll();toast("已创建患者和药品")}
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&$("loginView").style.display!=="none"){if($("registerForm").style.display==="none")doLogin();else doRegister()}});
 checkSession();
 </script>
