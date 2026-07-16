@@ -109,6 +109,41 @@ body{
 .avatar{background:linear-gradient(135deg,#dff8f3,#ede9fe);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9)}
 @media(max-width:980px){.system-status{display:none}.hero{grid-template-columns:1fr}.hero-main{grid-template-columns:1fr}.command-visual{min-height:220px}.hero-side{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:580px){.hero-main{grid-template-columns:1fr;padding:20px}.command-visual{display:none}.hero-side{grid-template-columns:1fr 1fr}.hero h2{font-size:2rem}.metric strong{font-size:1.65rem}}
+
+/* v5.2 refined palette: colder, cleaner, more clinical */
+:root{
+  --ink:#101828;--muted:#5f6b7a;--quiet:#94a3b8;--bg:#f7f9fc;--paper:#ffffff;--line:#d9e2ec;
+  --teal:#16807a;--teal-2:#42c6bb;--teal-soft:#e4fbf7;
+  --blue:#2f6fed;--blue-soft:#e6efff;--rose:#e5484d;--rose-soft:#ffe8ea;
+  --amber:#b86b00;--amber-soft:#fff1cf;--green:#24945b;--green-soft:#e3f8ea;
+  --violet:#5b5bd6;--violet-soft:#ececff;--slate:#111827;
+}
+body{
+  background:
+    radial-gradient(circle at 18% 6%,rgba(66,198,187,.18),transparent 30%),
+    radial-gradient(circle at 88% 0,rgba(47,111,237,.13),transparent 28%),
+    linear-gradient(180deg,#f7fbff 0,#f2f6fb 46%,#f8fafc 100%);
+}
+.topbar{background:rgba(255,255,255,.78);border-bottom:1px solid rgba(203,213,225,.55)}
+.system-status{background:#fff;border-color:#d7ede9;color:#475467}.system-status span{color:#16807a}
+.tab.active{background:#101828;color:#fff}
+.hero-main{
+  background:
+    radial-gradient(circle at 88% 16%,rgba(66,198,187,.28),transparent 24%),
+    radial-gradient(circle at 72% 86%,rgba(47,111,237,.22),transparent 26%),
+    linear-gradient(135deg,#101828 0,#1d2939 48%,#11615d 100%);
+  box-shadow:0 30px 80px rgba(16,24,40,.22),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.hero-main:before{opacity:.62}
+.eyebrow{color:#b8fff4}.hero p{color:rgba(234,244,248,.88)}
+.hero-actions .btn.dark{background:#f8fafc;color:#101828}.hero-actions .btn.guide{background:rgba(184,255,244,.14);border-color:rgba(184,255,244,.38);color:#eafffb}
+.signal-card{background:rgba(16,24,40,.42);border-color:rgba(226,232,240,.18)}.primary-signal{background:linear-gradient(135deg,rgba(66,198,187,.24),rgba(16,24,40,.36))}
+.metric:before{background:linear-gradient(180deg,#42c6bb,#2f6fed)}.metric strong{color:#101828}.metric span{color:#667085}
+.panel,.patient-card,.modal-box{background:rgba(255,255,255,.88);border-color:rgba(218,226,235,.85);box-shadow:0 20px 56px rgba(16,24,40,.08),inset 0 1px 0 rgba(255,255,255,.95)}
+.chip.active{background:#101828}.btn.primary{background:#16807a;border-color:#16807a}.btn.blue{background:#2f6fed;border-color:#2f6fed}
+.tag.info{background:#e6efff;color:#2f6fed}.avatar{background:linear-gradient(135deg,#e4fbf7,#e6efff);color:#11615d}
+.guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.guide-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:14px}.guide-card b{display:flex;align-items:center;gap:8px;margin-bottom:7px}.guide-card span{width:24px;height:24px;border-radius:8px;background:#101828;color:#fff;display:grid;place-items:center;font-size:.78rem}.guide-card p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.65}.guide-note{margin-top:12px;padding:12px;border-radius:14px;background:#f0fdfa;border:1px solid #b6eee6;color:#115e59;font-size:.88rem;line-height:1.65}
+@media(max-width:580px){.guide-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -161,6 +196,7 @@ body{
               <button class="btn dark" onclick="openPatientModal()">添加患者</button>
               <button class="btn" onclick="openOcrModal()">处方识别</button>
               <button class="btn" onclick="switchPage('patients')">查看患者</button>
+              <button class="btn guide" onclick="openModal('guideModal')">使用指南</button>
             </div>
           </div>
           <div class="command-visual" aria-hidden="true">
@@ -232,7 +268,8 @@ body{
           <div class="setting-row"><div><strong>导出备份</strong><p>导出当前账号的患者、药品、取药记录和提醒设置。</p></div><button class="btn primary" onclick="exportData()">导出 JSON</button></div>
           <div class="setting-row"><div><strong>导入备份</strong><p>导入会覆盖当前账号的数据，建议先导出一份备份。</p></div><button class="btn" onclick="document.getElementById('importInput').click()">导入 JSON</button><input id="importInput" type="file" accept=".json,application/json" style="display:none" onchange="importData(event)"></div>
           <div class="setting-row"><div><strong>当前账号</strong><p id="accountInfo"></p></div><button class="btn danger" onclick="doLogout()">退出登录</button></div>
-          <div class="setting-row"><div><strong>使用说明</strong><p>取药日期由开药日期、当前余量和每日用量估算。暂停或停用的药品不会进入提醒。</p></div><span class="tag info">v5.0</span></div>
+          <div class="setting-row"><div><strong>使用说明</strong><p>查看完整操作流程、取药计算规则和备份建议。</p></div><button class="btn blue" onclick="openModal('guideModal')">打开指南</button></div>
+          <div class="setting-row"><div><strong>版本</strong><p>冷白医疗中控视觉版，适合手机和电脑使用。</p></div><span class="tag info">v5.2</span></div>
         </div>
       </section>
     </section>
@@ -293,6 +330,19 @@ body{
   <input type="file" id="ocrFile" accept="image/*" style="display:none" onchange="handleOcr(event)">
   <div class="ocr-result" id="ocrResult"></div>
   <div class="modal-actions"><button class="btn" onclick="applyOcrToForm()">填入患者表单</button><button class="btn primary" onclick="quickCreateFromOcr()">快速创建</button></div>
+</div></div>
+
+<div class="modal" id="guideModal"><div class="modal-box wide">
+  <div class="modal-head"><div><div class="modal-title">使用指南</div><div class="modal-note">按这个流程录入，提醒才会准确。</div></div><button class="btn icon ghost" onclick="closeModal('guideModal')">×</button></div>
+  <div class="guide-grid">
+    <div class="guide-card"><b><span>1</span>先添加患者</b><p>填写姓名、电话、医保类型、常去医院和备注。患者资料越完整，后面搜索和回访越方便。</p></div>
+    <div class="guide-card"><b><span>2</span>再添加药品</b><p>进入患者卡片，点击“添加药品”。药品名、当前总量、每日用量、开始计算日期是提醒计算的关键。</p></div>
+    <div class="guide-card"><b><span>3</span>查看今日待办</b><p>首页会自动列出已超期、临近取药、待补药品的患者。你可以用“全部 / 已超期 / 临近 / 待补药品”快速筛选。</p></div>
+    <div class="guide-card"><b><span>4</span>取药后要记录</b><p>点击“记录取药”，填写本次新取药数量和日期。系统会把剩余药量加上新药量，并从取药日重新计算下次日期。</p></div>
+    <div class="guide-card"><b><span>5</span>换药不要直接删</b><p>药品暂时不用时选“暂停”，以后不再用时选“已停用”。这样历史还能保留，也不会继续进入提醒。</p></div>
+    <div class="guide-card"><b><span>6</span>定期导出备份</b><p>数据保存在当前浏览器。换电脑、清浏览器或重装系统前，请在设置里导出 JSON 备份。</p></div>
+  </div>
+  <div class="guide-note">计算规则：预计下次取药日期 = 开始计算日期 + 当前总量 ÷ 每日用量。暂停和停用药品不会提醒。OCR 识别只能辅助录入，药品数量和每日用量请人工确认。</div>
 </div></div>
 
 <div class="toast" id="toast"></div>
