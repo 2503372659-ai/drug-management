@@ -58,6 +58,57 @@ textarea{min-height:88px;resize:vertical}.error{display:none;color:var(--rose);f
 .fab{display:none;position:fixed;right:18px;bottom:18px;z-index:35;width:52px;height:52px;border-radius:18px;background:var(--teal);border:0;color:#fff;font-size:1.6rem;box-shadow:0 16px 35px rgba(15,118,110,.32)}
 @media(max-width:980px){.hero,.layout,.detail-grid{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.patient-grid{grid-template-columns:1fr}.top-inner{min-height:auto;align-items:flex-start;padding:12px 14px;flex-wrap:wrap}.tabs{order:3;width:100%;margin-left:0}.tab{flex:1}.user-pill{margin-left:auto}}
 @media(max-width:580px){.wrap{padding:14px 12px 90px}.hero-main{padding:20px;border-radius:20px}.hero h2{font-size:1.65rem}.hero-side{grid-template-columns:1fr 1fr}.metric{padding:14px}.metric strong{font-size:1.48rem}.toolbar{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.reminder{grid-template-columns:auto 1fr}.reminder>.tag,.reminder>.btn{grid-column:2}.setting-row{align-items:flex-start;flex-direction:column}.fab{display:block}.logo small,.user-pill{display:none}.tabs{position:fixed;left:12px;right:12px;bottom:12px;z-index:50;border-radius:18px;box-shadow:0 18px 45px rgba(15,23,42,.16);background:#fff}.tab{border-radius:14px}.modal{padding:10px}.modal-box{border-radius:18px;padding:18px}}
+
+/* Premium command-center skin */
+body{
+  background:
+    linear-gradient(115deg,rgba(20,184,166,.12),transparent 26%),
+    linear-gradient(245deg,rgba(124,58,237,.10),transparent 30%),
+    repeating-linear-gradient(90deg,rgba(15,23,42,.035) 0 1px,transparent 1px 72px),
+    repeating-linear-gradient(180deg,rgba(15,23,42,.028) 0 1px,transparent 1px 72px),
+    #f3f6fb;
+}
+.topbar{background:rgba(248,250,252,.72);border-bottom:1px solid rgba(148,163,184,.28)}
+.top-inner{max-width:1280px}
+.logo-badge{background:linear-gradient(145deg,#07131f,#0f766e);box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),0 14px 28px rgba(15,118,110,.22)}
+.system-status{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(15,118,110,.16);background:rgba(255,255,255,.66);border-radius:999px;font-size:.76rem;color:#475467;font-weight:900}
+.system-status span{letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}.system-status b{font-weight:900;color:#1f2937}
+.tabs{background:rgba(255,255,255,.62);box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}
+.tab.active{background:linear-gradient(135deg,#0f172a,#0f766e);color:#fff}
+.wrap{max-width:1280px}
+.hero{grid-template-columns:minmax(0,1.55fr) minmax(280px,.45fr);gap:20px}
+.hero-main{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.72fr);gap:20px;align-items:center;
+  min-height:318px;padding:30px;
+  background:
+    linear-gradient(135deg,rgba(3,7,18,.96),rgba(15,23,42,.92) 42%,rgba(15,118,110,.9)),
+    linear-gradient(90deg,rgba(255,255,255,.08),transparent);
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 28px 80px rgba(15,23,42,.22),inset 0 1px 0 rgba(255,255,255,.12);
+}
+.hero-main:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.055) 0 1px,transparent 1px 58px),repeating-linear-gradient(180deg,rgba(255,255,255,.045) 0 1px,transparent 1px 58px);mask-image:linear-gradient(90deg,#000,transparent 70%);pointer-events:none}
+.hero-main:after{display:none}
+.hero-copy,.command-visual{position:relative;z-index:1}
+.eyebrow{color:#99f6e4}.hero h2{font-size:clamp(2rem,4vw,3.65rem);max-width:720px}.hero p{font-size:1rem;color:rgba(226,232,240,.86)}
+.hero-actions .btn{border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(10px)}.hero-actions .btn.dark{background:#fff;color:#0f172a;border-color:#fff}.hero-actions .btn:hover{box-shadow:0 14px 34px rgba(0,0,0,.18)}
+.command-visual{min-height:250px}
+.visual-frame{height:100%;min-height:250px;border-radius:22px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 24px 55px rgba(0,0,0,.18);overflow:hidden;position:relative}
+.visual-frame:before{content:"";position:absolute;inset:42px 14px 14px;border:1px solid rgba(153,246,228,.16);border-radius:16px;background:linear-gradient(90deg,rgba(20,184,166,.10),transparent 38%,rgba(124,58,237,.10));pointer-events:none}
+.visual-head{display:flex;align-items:center;gap:7px;color:#cbd5e1;font-size:.72rem;font-weight:950;letter-spacing:.08em;text-transform:uppercase}.visual-head span{width:8px;height:8px;border-radius:50%;background:#99f6e4}.visual-head span:nth-child(2){background:#fcd34d}.visual-head span:nth-child(3){background:#c4b5fd}.visual-head b{margin-left:auto;color:#e2e8f0}
+.signal-grid{display:grid;grid-template-columns:1.15fr .85fr .85fr;gap:9px;margin-top:14px}.signal-card{border:1px solid rgba(255,255,255,.16);background:rgba(15,23,42,.38);border-radius:14px;padding:10px;min-height:76px}.signal-card small{display:block;color:#94a3b8;font-weight:900;font-size:.68rem}.signal-card strong{display:block;font-size:1.35rem;color:#fff;margin-top:5px}.signal-card em{display:block;height:4px;border-radius:999px;background:linear-gradient(90deg,#14b8a6,transparent);margin-top:10px}.amber-signal em{background:linear-gradient(90deg,#f59e0b,transparent)}.primary-signal{background:linear-gradient(135deg,rgba(20,184,166,.28),rgba(15,23,42,.34))}
+.med-orbit{position:relative;height:112px;margin:14px 0;border-radius:16px;background:radial-gradient(ellipse at center,rgba(20,184,166,.18),rgba(15,23,42,.24) 62%,rgba(15,23,42,.42));border:1px solid rgba(153,246,228,.18);overflow:hidden}
+.med-orbit i{position:absolute;width:56px;height:20px;border-radius:999px;background:linear-gradient(90deg,#fff 0 48%,#14b8a6 48% 100%);box-shadow:0 10px 24px rgba(20,184,166,.18);transform:rotate(-18deg)}
+.med-orbit i:nth-child(2){left:24px;top:28px}.med-orbit i:nth-child(3){right:28px;top:24px;transform:rotate(18deg);background:linear-gradient(90deg,#fff 0 48%,#7c3aed 48% 100%)}.med-orbit i:nth-child(4){left:44%;top:62px;background:linear-gradient(90deg,#fff 0 48%,#f59e0b 48% 100%)}.med-orbit i:nth-child(5){right:35%;top:36px;transform:rotate(8deg)}
+.scan-line{position:absolute;left:-20%;right:-20%;top:50%;height:2px;background:linear-gradient(90deg,transparent,#99f6e4,transparent);box-shadow:0 0 22px #14b8a6;animation:scan 2.8s ease-in-out infinite}@keyframes scan{0%,100%{transform:translateY(-42px)}50%{transform:translateY(42px)}}
+.visual-bars{display:grid;gap:7px}.visual-bars span{height:8px;border-radius:999px;background:linear-gradient(90deg,#14b8a6 var(--w),rgba(255,255,255,.14) var(--w));box-shadow:0 0 18px rgba(20,184,166,.16)}
+.hero-side{grid-template-columns:1fr;align-content:stretch}.metric{position:relative;overflow:hidden;background:rgba(255,255,255,.78);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.82);box-shadow:0 18px 40px rgba(15,23,42,.08)}.metric:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--teal),#7c3aed)}
+.metric strong{font-size:2.28rem}
+.panel,.patient-card,.modal-box{background:rgba(255,255,255,.82);backdrop-filter:blur(16px);border-color:rgba(255,255,255,.74);box-shadow:0 18px 48px rgba(15,23,42,.08),inset 0 1px 0 rgba(255,255,255,.86)}
+.panel-title{letter-spacing:.01em}.chip.active{background:linear-gradient(135deg,#0f172a,#0f766e);border-color:transparent}.reminder,.med-row,.setting-row,.detail-med,.timeline-item,.profile-box{background:rgba(255,255,255,.78);border-color:rgba(226,232,240,.88)}
+.patient-card{transition:transform .16s,box-shadow .16s}.patient-card:hover{transform:translateY(-2px);box-shadow:0 24px 58px rgba(15,23,42,.12)}
+.avatar{background:linear-gradient(135deg,#dff8f3,#ede9fe);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9)}
+@media(max-width:980px){.system-status{display:none}.hero{grid-template-columns:1fr}.hero-main{grid-template-columns:1fr}.command-visual{min-height:220px}.hero-side{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:580px){.hero-main{grid-template-columns:1fr;padding:20px}.command-visual{display:none}.hero-side{grid-template-columns:1fr 1fr}.hero h2{font-size:2rem}.metric strong{font-size:1.65rem}}
 </style>
 </head>
 <body>
@@ -89,6 +140,7 @@ textarea{min-height:88px;resize:vertical}.error{display:none;color:var(--rose);f
   <header class="topbar">
     <div class="top-inner">
       <div class="logo"><div class="logo-badge">药</div><div>慢病用药照护台<small>患者跟进 · 取药提醒 · 本地备份</small></div></div>
+      <div class="system-status"><span>Care OS</span><b>本地安全模式</b></div>
       <nav class="tabs">
         <button class="tab active" data-page="home">总览</button>
         <button class="tab" data-page="patients">患者</button>
@@ -101,13 +153,30 @@ textarea{min-height:88px;resize:vertical}.error{display:none;color:var(--rose);f
     <section class="page active" id="pageHome">
       <div class="hero">
         <div class="hero-main">
-          <div class="eyebrow">Care Desk</div>
-          <h2 id="heroTitle">今天没有需要处理的取药提醒</h2>
-          <p id="heroText">维护患者和药品信息后，系统会自动生成取药待办。</p>
-          <div class="hero-actions">
-            <button class="btn dark" onclick="openPatientModal()">添加患者</button>
-            <button class="btn" onclick="openOcrModal()">处方识别</button>
-            <button class="btn" onclick="switchPage('patients')">查看患者</button>
+          <div class="hero-copy">
+            <div class="eyebrow">Clinical Command Center</div>
+            <h2 id="heroTitle">今天没有需要处理的取药提醒</h2>
+            <p id="heroText">维护患者和药品信息后，系统会自动生成取药待办。</p>
+            <div class="hero-actions">
+              <button class="btn dark" onclick="openPatientModal()">添加患者</button>
+              <button class="btn" onclick="openOcrModal()">处方识别</button>
+              <button class="btn" onclick="switchPage('patients')">查看患者</button>
+            </div>
+          </div>
+          <div class="command-visual" aria-hidden="true">
+            <div class="visual-frame">
+              <div class="visual-head"><span></span><span></span><span></span><b>MED SIGNAL</b></div>
+              <div class="signal-grid">
+                <div class="signal-card primary-signal"><small>Adherence</small><strong>96%</strong><em></em></div>
+                <div class="signal-card"><small>Risk Scan</small><strong>Live</strong><em></em></div>
+                <div class="signal-card amber-signal"><small>Pickup</small><strong>7d</strong><em></em></div>
+              </div>
+              <div class="med-orbit">
+                <div class="scan-line"></div>
+                <i></i><i></i><i></i><i></i>
+              </div>
+              <div class="visual-bars"><span style="--w:78%"></span><span style="--w:54%"></span><span style="--w:88%"></span></div>
+            </div>
           </div>
         </div>
         <div class="hero-side" id="metricBox"></div>
