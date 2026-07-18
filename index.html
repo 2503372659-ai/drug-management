@@ -214,6 +214,44 @@ body{
 @media(max-width:1180px){.hero h2{font-size:3.15rem}.command-grid{grid-template-columns:1fr 1fr}.intel-card:nth-child(3){grid-column:1/-1}.week-board{grid-template-columns:repeat(7,minmax(70px,1fr));overflow-x:auto}}
 @media(max-width:980px){.hero-main{grid-template-columns:1fr;background:linear-gradient(90deg,rgba(16,24,40,.90),rgba(16,24,40,.38)),url("assets/care-command-hero.png") center/cover no-repeat}.command-grid{grid-template-columns:1fr}.risk-matrix{grid-template-columns:repeat(2,1fr)}.workspace-shell{grid-template-columns:1fr}.workspace-profile{position:relative;top:auto}.workspace-meds{grid-template-columns:1fr}.calendar-grid{min-width:820px}.calendar-grid-wrap{overflow-x:auto;padding-bottom:5px}}
 @media(max-width:580px){.hero-main{min-height:330px}.hero h2{font-size:2.25rem}.command-grid{gap:12px}.week-board{display:flex;overflow-x:auto}.day-chip{min-width:92px}.risk-cell{min-height:94px}.risk-cell strong{font-size:1.6rem}.workspace-toolbar{align-items:flex-start;flex-direction:column}.workspace-toolbar>div{width:100%}.workspace-toolbar>div .btn{flex:1}.workspace-section{padding:14px;border-radius:18px}.workspace-profile{border-radius:18px}.calendar-overdue.show{align-items:flex-start;flex-direction:column}}
+
+/* v7 professional care workspace */
+:root{--ink:#111827;--muted:#667085;--bg:#f3f5f7;--paper:#fff;--line:#dfe4ea;--teal:#08756b;--teal-2:#10a596;--teal-soft:#e8f5f2;--blue:#2563eb;--blue-soft:#eaf1ff;--slate:#0f1d2e;--shadow:0 8px 24px rgba(15,29,46,.06);--shadow-sm:0 1px 2px rgba(15,29,46,.05);--r-xl:8px;--r-lg:8px;--r-md:6px}
+body{background:#f3f5f7;color:#111827}
+.login{background:linear-gradient(90deg,rgba(9,22,36,.96),rgba(9,22,36,.72)),url("assets/care-command-hero.png") center/cover no-repeat}.login-box{border-radius:10px;background:#fff;border:1px solid rgba(255,255,255,.4);box-shadow:0 30px 80px rgba(0,0,0,.28)}
+.btn{border-radius:6px;box-shadow:none}.btn:hover{box-shadow:none;border-color:#aeb8c5}.btn.primary{background:#08756b;border-color:#08756b}.btn.blue{background:#2563eb;border-color:#2563eb}.btn.dark{background:#0f1d2e;border-color:#0f1d2e}.btn.sm{border-radius:5px}
+.panel,.patient-card,.modal-box,.intel-card,.workspace-section{background:#fff;backdrop-filter:none;border:1px solid #dfe4ea;border-radius:8px;box-shadow:var(--shadow-sm)}
+.panel-head{padding:17px 18px 0}.panel-body{padding:14px 18px 18px}.panel-title{font-size:.98rem}.panel-sub{font-size:.78rem}
+.tag,.chip{border-radius:999px}.patient-card{border-radius:8px}.med-row,.detail-med,.timeline-item,.setting-row,.profile-box{border-radius:6px;background:#fff}.avatar{border-radius:8px;background:#e8f5f2;box-shadow:none}.modal-box{border-radius:10px}input,select,textarea{border-radius:6px}
+@media(min-width:981px){
+  .topbar{position:sticky;inset:auto;width:auto;border:0;border-bottom:1px solid #dfe4ea;border-radius:0;background:#fff;box-shadow:none;overflow:visible}
+  .topbar:before{display:none}
+  .top-inner{height:64px;min-height:64px;max-width:1540px;margin:auto;padding:0 28px;display:flex;flex-direction:row;align-items:center;gap:22px}
+  .logo{align-items:center;min-width:max-content}.logo-badge{width:36px;height:36px;border-radius:8px;background:#08756b;box-shadow:none}.logo small{line-height:1.2;margin-top:2px}
+  .system-status{margin:0;border:0;border-left:1px solid #dfe4ea;border-radius:0;padding:0 0 0 20px;background:transparent;gap:7px}.system-status b{font-size:.76rem}.system-status span{font-size:.7rem}
+  .tabs{margin:0 0 0 10px;width:auto;display:flex;gap:2px;background:transparent;border:0;padding:0;box-shadow:none;height:64px}
+  .tab{width:auto;height:64px;text-align:center;border:0;border-bottom:2px solid transparent;border-radius:0;padding:0 15px;background:transparent;box-shadow:none;color:#5c6675}
+  .tab.active{background:transparent;color:#08756b;border-bottom-color:#08756b;box-shadow:none}
+  .user-pill{margin:0 0 0 auto;padding:0;border:0;border-radius:0;background:transparent}
+  .wrap{margin:0 auto;max-width:1540px;padding:24px 28px 72px}
+}
+.dashboard-header{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:16px}
+.dashboard-title{min-width:0}.dashboard-kicker{display:flex;align-items:center;gap:9px;color:#667085;font-size:.76rem;font-weight:850;margin-bottom:6px}.live-dot{width:7px;height:7px;border-radius:50%;background:#12a594;box-shadow:0 0 0 4px #dcf4ef}.dashboard-kicker b{color:#08756b}.dashboard-title h1{margin:0;font-size:1.7rem;line-height:1.2}.dashboard-title p{margin:7px 0 0;color:#667085;font-size:.88rem;line-height:1.5}
+.dashboard-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.attention-bar{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:24px;align-items:stretch;background:#0f1d2e;border:1px solid #0b1725;border-radius:8px;padding:18px 20px;margin-bottom:16px;color:#fff;box-shadow:0 12px 30px rgba(15,29,46,.12)}
+.attention-copy{display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:center;min-width:0}.attention-mark{width:42px;height:42px;border:1px solid rgba(255,255,255,.16);border-radius:7px;background:rgba(255,255,255,.08);display:grid;place-items:center;color:#7ce0d4;font-weight:950}.attention-copy span{display:block;color:#93a3b7;font-size:.72rem;font-weight:900;margin-bottom:4px}.attention-copy h2{margin:0;font-size:1.25rem;line-height:1.3;white-space:normal}.attention-copy p{margin:4px 0 0;color:#aab7c7;font-size:.76rem}
+.dashboard-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.1);border-radius:6px;overflow:hidden}
+.dashboard-metrics .metric{min-height:78px;border:0;border-radius:0;background:#14253a;box-shadow:none;padding:12px 14px;backdrop-filter:none}.dashboard-metrics .metric:before{display:none}.dashboard-metrics .metric strong{font-size:1.7rem;line-height:1;color:#fff}.dashboard-metrics .metric span{color:#9dadc0;font-size:.72rem;margin-top:8px}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(310px,.75fr);gap:16px;align-items:start;margin-bottom:16px}.dashboard-side{display:grid;gap:16px}.secondary-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);gap:16px}
+.queue-panel .panel-head{align-items:flex-start}.queue-panel .panel-body{padding-top:12px}.queue-panel .task-tabs{padding-bottom:12px;margin-bottom:0;border-bottom:1px solid #edf0f3}.queue-panel .reminder{grid-template-columns:auto minmax(0,1fr) auto auto;border:0;border-bottom:1px solid #edf0f3;border-radius:0;padding:13px 0;margin:0;background:#fff}.queue-panel .reminder:last-child{border-bottom:0}.queue-panel .dot{width:34px;height:34px;border-radius:6px}.queue-panel .reminder h3{font-size:.9rem}.queue-panel .reminder p{font-size:.78rem}
+.risk-panel .panel-body,.advice-panel .panel-body{padding-top:12px}.risk-matrix{grid-template-columns:1fr 1fr;gap:8px}.risk-cell{min-height:86px;border-radius:6px;padding:11px;background:#f8fafb}.risk-cell strong{font-size:1.55rem}.risk-cell.danger,.risk-cell.warn,.risk-cell.ok,.risk-cell.empty{background:#f8fafb}.risk-cell.danger{border-color:#f2c4c7;border-left:3px solid #d9474f}.risk-cell.warn{border-color:#ecd49b;border-left:3px solid #d99000}.risk-cell.ok{border-color:#bcdcca;border-left:3px solid #15803d}.risk-cell.empty{border-color:#bfd1ef;border-left:3px solid #2563eb}
+.intel-feed{gap:0}.feed-line{border:0;border-bottom:1px solid #edf0f3;border-radius:0;padding:11px 0;background:#fff}.feed-line:last-child{border-bottom:0}.feed-line i{width:30px;height:30px;border-radius:6px;background:#0f1d2e}.feed-line b{font-size:.84rem}.feed-line span{font-size:.76rem}
+.schedule-panel .week-board{grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}.schedule-panel .day-chip{min-height:84px;border-radius:6px;padding:9px;background:#f8fafb}.schedule-panel .day-chip strong{font-size:1.25rem}.schedule-panel .day-chip.hot{background:#fff3f3}.schedule-panel .day-chip.soon{background:#fff8e6}
+.recent-panel .reminder{grid-template-columns:auto minmax(0,1fr) auto;border:0;border-bottom:1px solid #edf0f3;border-radius:0;padding:11px 0;margin:0;background:#fff}.recent-panel .reminder:last-child{border-bottom:0}.recent-panel .dot{width:32px;height:32px;border-radius:6px}.recent-panel .reminder h3{font-size:.86rem}.recent-panel .reminder p{font-size:.76rem}
+.onboarding{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.8fr);gap:24px;align-items:center;padding:22px 4px}.onboarding-copy>span{display:inline-block;color:#08756b;font-size:.72rem;font-weight:950;margin-bottom:7px}.onboarding-copy h3{margin:0;font-size:1.18rem}.onboarding-copy p{max-width:540px;margin:7px 0 15px;color:#667085;font-size:.84rem;line-height:1.65}.onboarding-actions{display:flex;gap:8px;flex-wrap:wrap}.setup-steps{display:grid;gap:0;border-left:1px solid #dfe4ea}.setup-step{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:8px 0 8px 15px}.setup-step b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:#e8f5f2;color:#08756b;font-size:.72rem}.setup-step strong{display:block;font-size:.82rem}.setup-step span{display:block;color:#7a8594;font-size:.72rem;margin-top:2px}
+.calendar-day{border-radius:6px}.calendar-event{border-radius:4px}.workspace-profile,.workspace-section,.workspace-med{border-radius:8px}.workspace-profile{background:#0f1d2e}.workspace-kpi{border-radius:6px}.workspace-avatar{border-radius:8px}.workspace-med-note{border-radius:5px}
+@media(max-width:980px){.dashboard-header{align-items:flex-start}.attention-bar{grid-template-columns:1fr}.dashboard-grid,.secondary-grid{grid-template-columns:1fr}.dashboard-metrics{grid-template-columns:repeat(4,1fr)}.onboarding{grid-template-columns:1fr}.setup-steps{border-left:0;border-top:1px solid #dfe4ea;padding-top:8px}.login{background:linear-gradient(90deg,rgba(9,22,36,.92),rgba(9,22,36,.76)),url("assets/care-command-hero.png") center/cover no-repeat}}
+@media(max-width:580px){.dashboard-header{flex-direction:column}.dashboard-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}.dashboard-actions .btn{width:100%}.attention-bar{padding:15px}.dashboard-metrics{grid-template-columns:1fr 1fr}.dashboard-metrics .metric{min-height:72px}.queue-panel .reminder{grid-template-columns:auto minmax(0,1fr)}.queue-panel .reminder>.tag,.queue-panel .reminder>.btn{grid-column:2}.schedule-panel .week-board{display:flex}.schedule-panel .day-chip{min-width:82px}.onboarding{padding:16px 0}.onboarding-actions{display:grid;grid-template-columns:1fr}.recent-panel .reminder{grid-template-columns:auto minmax(0,1fr)}.recent-panel .reminder>.tag{grid-column:2}.topbar{background:#fff}.panel,.patient-card{border-radius:7px}}
 </style>
 </head>
 <body>
@@ -257,64 +295,30 @@ body{
   </header>
   <main class="wrap">
     <section class="page active" id="pageHome">
-      <div class="hero">
-        <div class="hero-main">
-          <div class="hero-copy">
-            <div class="eyebrow">Clinical Command Center</div>
-            <h2 id="heroTitle">今天没有需要处理的取药提醒</h2>
-            <p id="heroText">维护患者和药品信息后，系统会自动生成取药待办。</p>
-            <div class="hero-actions">
-              <button class="btn dark" onclick="openPatientModal()">添加患者</button>
-              <button class="btn" onclick="openOcrModal()">处方识别</button>
-              <button class="btn" onclick="switchPage('patients')">查看患者</button>
-              <button class="btn guide" onclick="openModal('guideModal')">使用指南</button>
-            </div>
-          </div>
-          <div class="command-visual" aria-hidden="true">
-            <div class="visual-frame">
-              <div class="visual-head"><span></span><span></span><span></span><b>MED SIGNAL</b></div>
-              <div class="signal-grid">
-                <div class="signal-card primary-signal"><small>Adherence</small><strong>96%</strong><em></em></div>
-                <div class="signal-card"><small>Risk Scan</small><strong>Live</strong><em></em></div>
-                <div class="signal-card amber-signal"><small>Pickup</small><strong>7d</strong><em></em></div>
-              </div>
-              <div class="med-orbit">
-                <div class="scan-line"></div>
-                <i></i><i></i><i></i><i></i>
-              </div>
-              <div class="visual-bars"><span style="--w:78%"></span><span style="--w:54%"></span><span style="--w:88%"></span></div>
-            </div>
-          </div>
+      <div class="dashboard-header">
+        <div class="dashboard-title">
+          <div class="dashboard-kicker"><span class="live-dot"></span><b>CARE DESK</b><span id="dashboardDate"></span></div>
+          <h1>用药照护工作台</h1>
+          <p id="heroText">集中处理患者档案、取药提醒和续方记录。</p>
         </div>
-        <div class="hero-side" id="metricBox"></div>
+        <div class="dashboard-actions">
+          <button class="btn primary" onclick="openPatientModal()">添加患者</button>
+          <button class="btn" onclick="openOcrModal()">处方识别</button>
+          <button class="btn" onclick="switchPage('calendar')">取药日历</button>
+          <button class="btn" onclick="openModal('guideModal')">使用指南</button>
+        </div>
       </div>
-      <div class="command-grid">
-        <section class="intel-card risk-card">
-          <div class="intel-head">
-            <div><b>风险矩阵</b><span>按超期、临近、稳定、待补药品分层</span></div>
-            <em>Live</em>
-          </div>
-          <div class="risk-matrix" id="riskMatrix"></div>
-        </section>
-        <section class="intel-card">
-          <div class="intel-head">
-            <div><b>7 天游标</b><span>未来一周取药压力</span></div>
-            <em>7D</em>
-          </div>
-          <div class="week-board" id="weekBoard"></div>
-        </section>
-        <section class="intel-card">
-          <div class="intel-head">
-            <div><b>智能摘要</b><span>下一步应该先处理什么</span></div>
-            <em>AI</em>
-          </div>
-          <div class="intel-feed" id="intelFeed"></div>
-        </section>
-      </div>
-      <div class="layout">
-        <section class="panel">
+      <section class="attention-bar">
+        <div class="attention-copy">
+          <div class="attention-mark">今</div>
+          <div><span>今日处理重点</span><h2 id="heroTitle">当前没有需要处理的取药提醒</h2><p>系统按预计取药时间持续计算风险</p></div>
+        </div>
+        <div class="dashboard-metrics" id="metricBox"></div>
+      </section>
+      <div class="dashboard-grid">
+        <section class="panel queue-panel">
           <div class="panel-head">
-            <div><div class="panel-title">今日待办</div><div class="panel-sub" id="taskSub">按紧急程度排序</div></div>
+            <div><div class="panel-title">今日任务队列</div><div class="panel-sub" id="taskSub">按紧急程度排序</div></div>
             <span class="tag muted" id="taskCount">0 项</span>
           </div>
           <div class="panel-body">
@@ -327,7 +331,23 @@ body{
             <div id="taskList"></div>
           </div>
         </section>
-        <section class="panel">
+        <aside class="dashboard-side">
+          <section class="panel risk-panel">
+            <div class="panel-head"><div><div class="panel-title">风险分布</div><div class="panel-sub">按处理优先级自动归类</div></div><span class="tag info">实时</span></div>
+            <div class="panel-body"><div class="risk-matrix" id="riskMatrix"></div></div>
+          </section>
+          <section class="panel advice-panel">
+            <div class="panel-head"><div><div class="panel-title">处理建议</div><div class="panel-sub">根据当前记录生成下一步建议</div></div></div>
+            <div class="panel-body"><div class="intel-feed" id="intelFeed"></div></div>
+          </section>
+        </aside>
+      </div>
+      <div class="secondary-grid">
+        <section class="panel schedule-panel">
+          <div class="panel-head"><div><div class="panel-title">未来 7 天取药计划</div><div class="panel-sub">快速判断本周的集中处理压力</div></div><button class="btn sm" onclick="switchPage('calendar')">查看完整日历</button></div>
+          <div class="panel-body"><div class="week-board" id="weekBoard"></div></div>
+        </section>
+        <section class="panel recent-panel">
           <div class="panel-head"><div><div class="panel-title">最近取药记录</div><div class="panel-sub">用于快速回看续方情况</div></div></div>
           <div class="panel-body" id="recentList"></div>
         </section>
@@ -386,7 +406,7 @@ body{
           <div class="setting-row"><div><strong>示例数据模式</strong><p>第一次体验时可一键生成示例患者、药品和取药记录，方便查看完整效果。</p></div><button class="btn blue" onclick="seedDemoData()">生成示例数据</button></div>
           <div class="setting-row"><div><strong>当前账号</strong><p id="accountInfo"></p></div><button class="btn danger" onclick="doLogout()">退出登录</button></div>
           <div class="setting-row"><div><strong>使用说明</strong><p>查看完整操作流程、取药计算规则和备份建议。</p></div><button class="btn blue" onclick="openModal('guideModal')">打开指南</button></div>
-          <div class="setting-row"><div><strong>版本</strong><p>医疗运营控制台最终版，适合手机和电脑使用。</p></div><span class="tag info">v6.1</span></div>
+          <div class="setting-row"><div><strong>版本</strong><p>专业照护工作台版，适合手机和电脑使用。</p></div><span class="tag info">v7.0</span></div>
         </div>
       </section>
     </section>
@@ -515,8 +535,34 @@ function buildTasks(d){var tasks=[];d.m.forEach(function(m){var pt=getPatient(d,
 function setTaskFilter(f){taskFilter=f;document.querySelectorAll(".chip").forEach(function(c){c.classList.toggle("active",c.dataset.task===f)});renderHome()}
 function medPct(info,m){if(!isActive(m))return 0;var total=Number(m.q)||0;if(total<=0)return 0;return Math.max(0,Math.min(100,Math.round((Number(info.qty)||0)/total*100)))}
 function progressHtml(info,m){var pct=medPct(info,m),cls=info.overdue?" danger":info.urgent?" warn":"";return '<div class="med-progress'+cls+'" title="余量约 '+pct+'%"><span style="--pct:'+pct+'%"></span></div>'}
-function renderCommandWidgets(d,tasks){var overdue=tasks.filter(function(t){return t.type==="overdue"}).length,soon=tasks.filter(function(t){return t.type==="soon"}).length,empty=tasks.filter(function(t){return t.type==="empty"}).length,active=d.m.filter(isActive),stable=active.filter(function(m){return !calcAt(m).urgent}).length;$("riskMatrix").innerHTML='<div class="risk-cell danger"><span>已超期</span><strong>'+overdue+'</strong><span>立即处理</span></div><div class="risk-cell warn"><span>临近取药</span><strong>'+soon+'</strong><span>'+remindDays()+' 天内</span></div><div class="risk-cell ok"><span>状态稳定</span><strong>'+stable+'</strong><span>无需操作</span></div><div class="risk-cell empty"><span>待补药品</span><strong>'+empty+'</strong><span>完善档案</span></div>';var base=parseDate(today()),days=[];for(var i=0;i<7;i++){var dt=addDays(base,i),key=fmt(dt),count=0,hot=false;active.forEach(function(m){var info=calcAt(m);if(info.nextDate===key){count++;if(info.overdue)hot=true}});days.push('<div class="day-chip '+(hot?'hot':count?'soon':'')+'"><b>'+(i===0?'今天':String(dt.getMonth()+1)+'/'+dt.getDate())+'</b><strong>'+count+'</strong><span>取药项</span></div>')}$("weekBoard").innerHTML=days.join("");var first=tasks.find(function(t){return t.type!=="empty"}),lines=[];if(overdue)lines.push('<div class="feed-line"><i>!</i><div><b>先处理超期药品</b><span>有 '+overdue+' 项已经超过预计取药日，建议优先电话确认或记录取药。</span></div></div>');if(first)lines.push('<div class="feed-line"><i>药</i><div><b>'+esc(first.pt?first.pt.name:"患者")+' 是当前优先项</b><span>'+esc(first.m.drug)+' 预计 '+first.info.nextDate+' 取药，余量约 '+first.info.qty+esc(first.m.unit)+'。</span></div></div>');if(empty)lines.push('<div class="feed-line"><i>补</i><div><b>完善患者药品档案</b><span>'+empty+' 位患者没有药品记录，补齐后才能进入自动提醒。</span></div></div>');if(!lines.length)lines.push('<div class="feed-line"><i>✓</i><div><b>今日状态平稳</b><span>没有紧急待办。建议定期导出备份，并保持用药记录更新。</span></div></div>');$("intelFeed").innerHTML=lines.join("")}
-function renderHome(){var d=ld(),tasks=buildTasks(d),visible=tasks.filter(function(t){return taskFilter==="all"||t.type===taskFilter}),overdue=tasks.filter(function(t){return t.type==="overdue"}).length,soon=tasks.filter(function(t){return t.type==="soon"}).length,empty=tasks.filter(function(t){return t.type==="empty"}).length,activeMeds=d.m.filter(isActive).length,stopped=d.m.length-activeMeds;$("metricBox").innerHTML='<div class="metric"><strong>'+d.p.length+'</strong><span>患者总数</span></div><div class="metric"><strong>'+activeMeds+'</strong><span>服用中药品</span></div><div class="metric"><strong style="color:'+(tasks.length?'var(--rose)':'var(--teal)')+'">'+tasks.length+'</strong><span>系统待办</span></div><div class="metric"><strong>'+stopped+'</strong><span>暂停/停用</span></div>';$("heroTitle").textContent=overdue?"有 "+overdue+" 项药品已超期":soon?"有 "+soon+" 项药品临近取药":empty?"有 "+empty+" 位患者待补药品":"今天没有需要处理的取药提醒";$("heroText").textContent=tasks.length?"当前提醒规则为提前 "+remindDays()+" 天。系统已按风险级别整理待办，处理取药记录后会重新预测下一次日期。":"状态平稳。这里会持续汇总患者风险、未来一周取药压力和最近操作。";$("taskCount").textContent=visible.length+" 项";$("taskSub").textContent="提前 "+remindDays()+" 天提醒";renderCommandWidgets(d,tasks);var box=$("taskList");if(!visible.length){box.innerHTML='<div class="empty">当前筛选下没有待办。</div>'}else{box.innerHTML=visible.map(function(t){if(t.type==="empty")return '<div class="reminder"><div class="dot gray">补</div><div><h3>'+esc(t.pt.name)+'</h3><p>还没有录入药品，建议补全长期用药。</p></div><span class="tag muted">待补</span><button class="btn sm primary" onclick="openMedModal('+t.pt.id+')">添加药品</button></div>';var cls=t.info.overdue?"danger":"warn";return '<div class="reminder"><div class="dot '+cls+'">'+(t.info.overdue?'!':'近')+'</div><div><h3>'+esc(t.pt?t.pt.name:"未关联患者")+' · '+esc(t.m.drug)+'</h3><p>余量约 '+t.info.qty+esc(t.m.unit)+'，每日 '+esc(t.m.d)+esc(t.m.unit)+'，下次取药 '+t.info.nextDate+'</p>'+progressHtml(t.info,t.m)+'</div>'+statusTag(t.info)+'<button class="btn sm primary" onclick="openPickupModal('+t.m.id+')">记录取药</button></div>'}).join("")}renderRecent(d)}
+function renderCommandWidgets(d,tasks){
+  var overdue=tasks.filter(function(t){return t.type==="overdue"}).length,soon=tasks.filter(function(t){return t.type==="soon"}).length,empty=tasks.filter(function(t){return t.type==="empty"}).length,active=d.m.filter(isActive),stable=active.filter(function(m){return !calcAt(m).urgent}).length;
+  $("riskMatrix").innerHTML='<div class="risk-cell danger"><span>已超期</span><strong>'+overdue+'</strong><span>立即处理</span></div><div class="risk-cell warn"><span>临近取药</span><strong>'+soon+'</strong><span>'+remindDays()+' 天内</span></div><div class="risk-cell ok"><span>状态稳定</span><strong>'+stable+'</strong><span>无需操作</span></div><div class="risk-cell empty"><span>待补药品</span><strong>'+empty+'</strong><span>完善档案</span></div>';
+  var base=parseDate(today()),days=[];
+  for(var i=0;i<7;i++){var dt=addDays(base,i),key=fmt(dt),count=0,hot=false;active.forEach(function(m){var info=calcAt(m);if(info.nextDate===key){count++;if(info.overdue)hot=true}});days.push('<div class="day-chip '+(hot?'hot':count?'soon':'')+'"><b>'+(i===0?'今天':String(dt.getMonth()+1)+'/'+dt.getDate())+'</b><strong>'+count+'</strong><span>取药项</span></div>')}
+  $("weekBoard").innerHTML=days.join("");
+  var first=tasks.find(function(t){return t.type!=="empty"}),lines=[];
+  if(!d.p.length)lines.push('<div class="feed-line"><i>1</i><div><b>建立第一位患者档案</b><span>录入患者和长期用药后，提醒、日历和风险分析会自动开始工作。</span></div></div>');
+  if(overdue)lines.push('<div class="feed-line"><i>!</i><div><b>先处理超期药品</b><span>有 '+overdue+' 项已经超过预计取药日，建议优先电话确认或记录取药。</span></div></div>');
+  if(first)lines.push('<div class="feed-line"><i>药</i><div><b>'+esc(first.pt?first.pt.name:"患者")+' 是当前优先项</b><span>'+esc(first.m.drug)+' 预计 '+first.info.nextDate+' 取药，余量约 '+first.info.qty+esc(first.m.unit)+'。</span></div></div>');
+  if(empty)lines.push('<div class="feed-line"><i>补</i><div><b>完善患者药品档案</b><span>'+empty+' 位患者没有药品记录，补齐后才能进入自动提醒。</span></div></div>');
+  if(!lines.length)lines.push('<div class="feed-line"><i>✓</i><div><b>今日状态平稳</b><span>没有紧急待办。建议定期导出备份，并保持用药记录更新。</span></div></div>');
+  $("intelFeed").innerHTML=lines.join("")
+}
+function renderHome(){
+  var d=ld(),tasks=buildTasks(d),visible=tasks.filter(function(t){return taskFilter==="all"||t.type===taskFilter}),overdue=tasks.filter(function(t){return t.type==="overdue"}).length,soon=tasks.filter(function(t){return t.type==="soon"}).length,empty=tasks.filter(function(t){return t.type==="empty"}).length,activeMeds=d.m.filter(isActive).length,stopped=d.m.length-activeMeds,now=new Date(),week=["日","一","二","三","四","五","六"];
+  if($("dashboardDate"))$("dashboardDate").textContent=(now.getMonth()+1)+"月"+now.getDate()+"日 · 星期"+week[now.getDay()];
+  $("metricBox").innerHTML='<div class="metric"><strong>'+d.p.length+'</strong><span>患者总数</span></div><div class="metric"><strong>'+activeMeds+'</strong><span>服用中药品</span></div><div class="metric"><strong style="color:'+(tasks.length?'#fb7185':'#7ce0d4')+'">'+tasks.length+'</strong><span>当前待办</span></div><div class="metric"><strong>'+stopped+'</strong><span>暂停 / 停用</span></div>';
+  $("heroTitle").textContent=!d.p.length?"从第一位患者档案开始":overdue?"有 "+overdue+" 项药品已经超期":soon?"有 "+soon+" 项药品临近取药":empty?"有 "+empty+" 位患者需要补全药品":"今天没有需要处理的取药提醒";
+  $("heroText").textContent=!d.p.length?"完成患者和药品录入后，系统会自动计算余量、取药日期和处理优先级。":tasks.length?"提醒规则为提前 "+remindDays()+" 天，处理取药记录后会立即重新预测下次日期。":"当前状态平稳，系统会持续汇总风险、取药计划和最近操作。";
+  $("taskCount").textContent=d.p.length?visible.length+" 项":"待配置";$("taskSub").textContent="提前 "+remindDays()+" 天提醒";
+  renderCommandWidgets(d,tasks);
+  var box=$("taskList");
+  if(!d.p.length){box.innerHTML='<div class="onboarding"><div class="onboarding-copy"><span>首次使用</span><h3>先建立基础档案，系统才能开始提醒</h3><p>你可以手动添加真实患者，也可以先生成示例数据体验完整的风险预警、取药日历和患者工作台。</p><div class="onboarding-actions"><button class="btn primary" onclick="openPatientModal()">添加第一位患者</button><button class="btn" onclick="seedDemoData()">生成示例数据</button><button class="btn" onclick="openModal(&quot;guideModal&quot;)">查看使用指南</button></div></div><div class="setup-steps"><div class="setup-step"><b>1</b><div><strong>建立患者档案</strong><span>姓名、电话、医保与医院</span></div></div><div class="setup-step"><b>2</b><div><strong>录入长期用药</strong><span>总量、每日用量与开始日期</span></div></div><div class="setup-step"><b>3</b><div><strong>每次取药后登记</strong><span>余量和下次日期会自动更新</span></div></div></div></div>'}
+  else if(!visible.length){box.innerHTML='<div class="empty">当前筛选下没有需要处理的任务。</div>'}
+  else{box.innerHTML=visible.map(function(t){if(t.type==="empty")return '<div class="reminder"><div class="dot gray">补</div><div><h3>'+esc(t.pt.name)+'</h3><p>还没有录入药品，建议补全长期用药。</p></div><span class="tag muted">待补</span><button class="btn sm primary" onclick="openMedModal('+t.pt.id+')">添加药品</button></div>';var cls=t.info.overdue?"danger":"warn";return '<div class="reminder"><div class="dot '+cls+'">'+(t.info.overdue?'!':'近')+'</div><div><h3>'+esc(t.pt?t.pt.name:"未关联患者")+' · '+esc(t.m.drug)+'</h3><p>余量约 '+t.info.qty+esc(t.m.unit)+'，每日 '+esc(t.m.d)+esc(t.m.unit)+'，下次取药 '+t.info.nextDate+'</p>'+progressHtml(t.info,t.m)+'</div>'+statusTag(t.info)+'<button class="btn sm primary" onclick="openPickupModal('+t.m.id+')">记录取药</button></div>'}).join("")}
+  renderRecent(d)
+}
 function renderRecent(d){var rows=[];d.r.forEach(function(r){var m=getMed(d,r.mid),pt=m?getPatient(d,m.pid):null;rows.push({r:r,m:m,pt:pt})});rows.sort(function(a,b){return String(b.r.date).localeCompare(String(a.r.date))});rows=rows.slice(0,8);$("recentList").innerHTML=rows.length?rows.map(function(x){return '<div class="reminder"><div class="dot ok">✓</div><div><h3>'+esc(x.pt?x.pt.name:"未知患者")+' · '+esc(x.m?x.m.drug:"已删除药品")+'</h3><p>'+esc(x.r.date)+' 取药 '+esc(x.r.qty)+(x.m?esc(x.m.unit):'')+(x.r.notes?' · '+esc(x.r.notes):'')+'</p></div><span class="tag ok">已记录</span></div>'}).join(""):'<div class="empty">暂无取药记录。</div>'}
 function renderPatients(){var d=ld(),q=($("searchInput").value||"").trim().toLowerCase(),filter=$("statusFilter").value,sort=$("sortMode").value,items=d.p.map(function(pt){return{pt:pt,sum:patientSummary(d,pt)}});items=items.filter(function(x){var hay=[x.pt.name,x.pt.phone,x.pt.insurance,x.pt.hospital,x.pt.notes].concat(x.sum.meds.map(function(m){return m.drug+" "+(m.spec||"")})).join(" ").toLowerCase();if(q&&hay.indexOf(q)===-1)return false;if(filter==="urgent")return x.sum.urgent;if(filter==="normal")return x.sum.active.length&&!x.sum.urgent;if(filter==="empty")return !x.sum.meds.length;if(filter==="paused")return x.sum.inactive;return true});items.sort(function(a,b){if(sort==="name")return String(a.pt.name).localeCompare(String(b.pt.name),"zh-Hans-CN");if(sort==="meds")return b.sum.meds.length-a.sum.meds.length;var ad=a.sum.worst?a.sum.worst.diff:999,bd=b.sum.worst?b.sum.worst.diff:999;return ad-bd});var grid=$("patientGrid");if(!items.length){grid.innerHTML='<section class="panel" style="grid-column:1/-1"><div class="empty">没有匹配的患者。</div></section>';return}grid.innerHTML=items.map(patientCardHtml).join("")}
 function patientCardHtml(x){var pt=x.pt,ms=x.sum.meds.slice(0,3),initial=esc((pt.name||"?").slice(0,1)),meta=[pt.phone,pt.insurance,pt.hospital].filter(Boolean).map(esc).join(" · "),medHtml=ms.length?ms.map(function(m){var info=calcAt(m),cls=m.status==="paused"?" paused":m.status==="stopped"?" stopped":"";return '<div class="med-row'+cls+'"><div><div class="med-name">'+esc(m.drug)+' '+statusLabel(m)+'</div><div class="med-info">'+(isActive(m)?'余量约 '+info.qty+esc(m.unit)+' · 下次 '+info.nextDate:(m.statusNote?esc(m.statusNote):'不参与提醒'))+'</div>'+(isActive(m)?progressHtml(info,m):'')+'</div>'+statusTag(info)+'</div>'}).join(""):'<div class="med-row"><div><div class="med-name">暂无用药</div><div class="med-info">添加药品后会自动计算取药提醒</div></div><span class="tag muted">空</span></div>';return '<article class="patient-card"><div class="patient-top"><div class="avatar">'+initial+'</div><div><div class="patient-name">'+esc(pt.name)+'</div><div class="patient-meta">'+(meta||"未填写更多信息")+'</div></div><div class="patient-actions"><button class="btn icon ghost" title="编辑" onclick="openPatientModal('+pt.id+')">✎</button><button class="btn icon ghost" title="删除" onclick="deletePatient('+pt.id+')">×</button></div></div><div class="med-list">'+medHtml+'</div><div class="card-foot"><button class="btn sm primary" onclick="showPatientDetail('+pt.id+')">详情</button><button class="btn sm" onclick="openMedModal('+pt.id+')">添加药品</button>'+(x.sum.active.length?'<button class="btn sm" onclick="openFirstPickup('+pt.id+')">记录取药</button>':'')+'</div></article>'}
